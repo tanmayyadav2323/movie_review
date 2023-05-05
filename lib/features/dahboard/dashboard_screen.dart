@@ -17,42 +17,45 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 2.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Text(
-              "Trending",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 2.h,
             ),
-          ),
-          SizedBox(
-            height: 4.h,
-          ),
-          CarouselSlider.builder(
-            itemCount: 10,
-            itemBuilder: (context, index, pageIndex) {
-              return VideoApp();
-            },
-            options: CarouselOptions(
-              aspectRatio: 4 / 3,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.32,
-              viewportFraction: 0.8,
-              autoPlay: true,
-              height: 40.h,
-              pauseAutoPlayOnTouch: true,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Text(
+                "Trending",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 2.h,
-          ),
-          CategoryContainer(),
-        ],
+            SizedBox(
+              height: 4.h,
+            ),
+            CarouselSlider.builder(
+              itemCount: 10,
+              itemBuilder: (context, index, pageIndex) {
+                return VideoApp();
+              },
+              options: CarouselOptions(
+                aspectRatio: 4 / 3,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.32,
+                viewportFraction: 0.8,
+                enableInfiniteScroll: true,
+                pauseAutoPlayInFiniteScroll: true,
+                height: 40.h,
+                pauseAutoPlayOnTouch: true,
+              ),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            CategoryContainer(),
+          ],
+        ),
       ),
     ));
   }

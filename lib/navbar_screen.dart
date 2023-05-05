@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/dahboard/dashboard_screen.dart';
+import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class NavBarScreeen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _screens = <Widget>[
-    DashBoardScreen(),
+    MovieDetailScreen(),
     Center(
       child: Text(
         'Likes',
