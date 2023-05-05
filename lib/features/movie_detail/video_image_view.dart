@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/dahboard/widgets/video_player.dart';
+import 'package:movie_review/features/movie_detail/photo_box.dart';
 import 'package:movie_review/features/movie_detail/video_box.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,6 +20,10 @@ class _VideoImageViewState extends State<VideoImageView>
     super.initState();
     _tabController = TabController(
         length: 2, vsync: this); // Change length to number of tabs you want
+    _tabController.addListener(() {
+      _selectedIndex = _tabController.index;
+      setState(() {});
+    });
   }
 
   @override
@@ -72,14 +77,24 @@ class _VideoImageViewState extends State<VideoImageView>
                 ),
               ); //1st custom tabBarView
             } else if (_selectedIndex == 1) {
-              return Container(); //2nd tabView
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: Row(
+                    children: [
+                      PhotoBox(),
+                      PhotoBox(),
+                      PhotoBox(),
+                      PhotoBox(),
+                    ],
+                  ),
+                ),
+              ); //2nd tabView
             }
             return SizedBox.shrink();
           },
         ),
-        SizedBox(
-          height: 10.h,
-        )
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/theme_color.dart';
+import 'package:movie_review/features/movie_detail/review_view.dart';
 import 'package:movie_review/features/movie_detail/video_image_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -244,7 +245,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             SizedBox(
               height: 2.h,
             ),
-            VideoImageView()
+            VideoImageView(),
+            SizedBox(
+              height: 4.h,
+            ),
+            MovieReview()
           ],
         ),
       )),
