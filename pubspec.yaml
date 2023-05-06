@@ -43,6 +43,9 @@ dependencies:
   google_fonts: ^4.0.4
   page_transition: ^2.0.9
   lottie: ^2.3.2
+  http: ^0.13.6
+  provider: ^6.0.5
+  shared_preferences: ^2.0.17
 
 
 dev_dependencies:
