@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/movie_detail/creators_view.dart';
 import 'package:movie_review/features/movie_detail/did_you_know_view.dart';
+import 'package:movie_review/features/movie_detail/rating_bottom_sheet.dart';
 import 'package:movie_review/features/movie_detail/review_view.dart';
 import 'package:movie_review/features/movie_detail/top_cast_view.dart';
 import 'package:movie_review/features/movie_detail/video_image_view.dart';
 import 'package:sizer/sizer.dart';
 
 class MovieDetailScreen extends StatefulWidget {
+  static const routename = "movie-detail-screen";
   const MovieDetailScreen({super.key});
 
   @override
@@ -22,6 +24,64 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: 2.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)),
+                        ),
+                        context: context,
+                        builder: (context) => RatingBottomSheet(),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: lightBlack,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.star_border,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Text(
+                            "Rate",
+                            style: TextStyle(
+                                fontSize: 12.sp, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
             SizedBox(
               height: 6.h,
             ),

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/dahboard/widgets/video_player.dart';
+import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/widgets/category_container.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
@@ -37,7 +38,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             CarouselSlider.builder(
               itemCount: 10,
               itemBuilder: (context, index, pageIndex) {
-                return VideoApp();
+                return GestureDetector(
+                  child: VideoApp(),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(MovieDetailScreen.routename);
+                  },
+                );
               },
               options: CarouselOptions(
                 aspectRatio: 4 / 3,

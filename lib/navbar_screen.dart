@@ -6,6 +6,7 @@ import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class NavBarScreeen extends StatefulWidget {
+  static const routename = '/nav-screen';
   const NavBarScreeen({super.key});
 
   @override
@@ -16,7 +17,7 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _screens = <Widget>[
-    MovieDetailScreen(),
+    DashBoardScreen(),
     Center(
       child: Text(
         'Likes',

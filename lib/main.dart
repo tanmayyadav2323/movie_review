@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_review/config/cutom_routes.dart';
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/dahboard/dashboard_screen.dart';
 import 'package:movie_review/navbar_screen.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         themeMode: ThemeMode.dark,
-        home: const NavBarScreeen(),
+        onGenerateRoute: CustomRouter.onGenerateRoute,
+        initialRoute: NavBarScreeen.routename,
       ),
     );
   }
