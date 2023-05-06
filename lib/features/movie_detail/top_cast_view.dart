@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:movie_review/features/movie_detail/member_box.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:movie_review/features/movie_detail/member_box.dart';
+
 class TopCastView extends StatefulWidget {
-  const TopCastView({super.key});
+  final List<dynamic> cast;
+  const TopCastView({
+    Key? key,
+    required this.cast,
+  }) : super(key: key);
 
   @override
   State<TopCastView> createState() => _TopCastViewState();
@@ -38,12 +44,9 @@ class _TopCastViewState extends State<TopCastView> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
-                MemberBox(),
-                MemberBox(),
-                MemberBox(),
-                MemberBox(),
-              ],
+              children: widget.cast.map((val) {
+                return MemberBox(url: val["photo"], name: val["name"]);
+              }).toList(),
             ),
           ),
         ],

@@ -271,11 +271,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             SizedBox(
               height: 4.h,
             ),
-            TopCastView(),
+            TopCastView(
+              cast: movie["cast"],
+            ),
             SizedBox(
               height: 4.h,
             ),
-            CreatorsVew(),
+            CreatorsVew(creator: movie["writers"]),
             SizedBox(
               height: 4.h,
             ),
