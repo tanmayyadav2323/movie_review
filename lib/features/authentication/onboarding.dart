@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tiaahack/login_screen.dart';
+
 
 class OnboardingScreen extends StatelessWidget {
   @override
@@ -67,10 +67,7 @@ class OnboardingScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
+                        
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0XFFf5c518),

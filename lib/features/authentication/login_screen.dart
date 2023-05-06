@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_review/authentication/square_tile.dart';
+import 'package:movie_review/features/authentication/square_tile.dart';
+
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
