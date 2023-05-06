@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_review/features/movie_detail/review_box.dart';
 import 'package:sizer/sizer.dart';
 
 class MovieReview extends StatefulWidget {
@@ -103,10 +104,10 @@ class _MovieReviewState extends State<MovieReview>
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 10.h,
-                      ),
+                      ReviewBox(),
+                      ReviewBox(),
+                      ReviewBox(),
+                      ReviewBox(),
                     ],
                   ),
                 ),
@@ -118,10 +119,10 @@ class _MovieReviewState extends State<MovieReview>
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 10.h,
-                      ),
+                      ReviewBox(),
+                      ReviewBox(),
+                      ReviewBox(),
+                      ReviewBox(),
                     ],
                   ),
                 ),
