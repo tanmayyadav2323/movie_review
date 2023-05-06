@@ -3,7 +3,9 @@ import 'package:movie_review/features/authentication/login_screen.dart';
 import 'package:movie_review/features/authentication/verify_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
+import 'package:movie_review/features/movie_detail/screens/comment_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/write_review.dart';
+import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -45,7 +47,9 @@ class CustomRouter {
           type: PageTransitionType.rightToLeft,
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: ReviewScreen.routename),
-          child: ReviewScreen(),
+          child: ReviewScreen(
+            review: settings.arguments as Review,
+          ),
         );
       case WriteReviewScreeen.routename:
         return PageTransition(
@@ -55,6 +59,13 @@ class CustomRouter {
           child: WriteReviewScreeen(
             movieId: settings.arguments as String,
           ),
+        );
+      case CommentScreen.routename:
+        return PageTransition(
+          type: PageTransitionType.bottomToTop,
+          duration: Duration(milliseconds: 500),
+          settings: const RouteSettings(name: CommentScreen.routename),
+          child: CommentScreen(),
         );
       case LoginPage.routename:
         return MaterialPageRoute(
