@@ -21,12 +21,11 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
   static const List<Widget> _screens = <Widget>[
     DashBoardScreen(),
     SearchScreen(),
-    GenreMovies(),
-    // Center(
-    //   child: Text(
-    //     'Search',
-    //   ),
-    // ),
+    Center(
+      child: Text(
+        'Search',
+      ),
+    ),
     Center(
       child: Text(
         'Profile',
