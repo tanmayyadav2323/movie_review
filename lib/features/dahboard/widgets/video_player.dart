@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -5,7 +6,12 @@ import 'package:video_player/video_player.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoApp extends StatefulWidget {
-  const VideoApp({super.key});
+  final dynamic movie;
+
+  const VideoApp({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   _VideoAppState createState() => _VideoAppState();
@@ -17,13 +23,12 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://res.cloudinary.com/dr1a3h3ll/video/upload/v1683311171/TIAA-HACK/Avatar__The_Way_of_Water___New_Trailer_1_p8mebz.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        _controller.setVolume(0);
-        setState(() {});
-      });
+    _controller = VideoPlayerController.network(widget.movie["videos"][0]);
+    // ..initialize().then((_) {
+    //   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+    //   _controller.setVolume(0);
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -45,7 +50,9 @@ class _VideoAppState extends State<VideoApp> {
                       ? VideoPlayer(
                           _controller,
                         )
-                      : SizedBox.shrink(),
+                      : Container(
+                          child: Image.network(widget.movie["photos"][0]),
+                        ),
                 ),
               ),
               Positioned(
@@ -92,7 +99,7 @@ class _VideoAppState extends State<VideoApp> {
                       SizedBox(
                         width: 1.w,
                       ),
-                      Text("4.8")
+                      Text((widget.movie["rating"] ?? 0).toString())
                     ],
                   ),
                 ),
@@ -178,9 +185,9 @@ class _VideoAppState extends State<VideoApp> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: Text(
-                              "Transformers: Rise of the Beasts",
-                              maxLines: 4,
+                            child: AutoSizeText(
+                              widget.movie["title"],
+                              maxLines: 2,
                               style: TextStyle(
                                   fontSize: 14.sp, fontWeight: FontWeight.bold),
                             ),
@@ -205,6 +212,10 @@ class _VideoAppState extends State<VideoApp> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              if (_controller.value.isInitialized == false) {
+                                _controller.initialize();
+                                _controller.setVolume(0);
+                              }
                               if (_controller.value.isPlaying) {
                                 _controller.pause();
                               } else {

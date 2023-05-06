@@ -35,7 +35,9 @@ class CustomRouter {
           type: PageTransitionType.rightToLeft,
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: MovieDetailScreen.routename),
-          child: MovieDetailScreen(),
+          child: MovieDetailScreen(
+            movie: settings.arguments as dynamic,
+          ),
         );
       case ReviewScreen.routename:
         return PageTransition(

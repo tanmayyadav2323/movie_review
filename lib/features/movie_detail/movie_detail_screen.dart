@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/movie_detail/creators_view.dart';
 import 'package:movie_review/features/movie_detail/did_you_know_view.dart';
@@ -6,17 +9,29 @@ import 'package:movie_review/features/movie_detail/rating_bottom_sheet.dart';
 import 'package:movie_review/features/movie_detail/review_view.dart';
 import 'package:movie_review/features/movie_detail/top_cast_view.dart';
 import 'package:movie_review/features/movie_detail/video_image_view.dart';
-import 'package:sizer/sizer.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   static const routename = "movie-detail-screen";
-  const MovieDetailScreen({super.key});
+  final dynamic movie;
+
+  const MovieDetailScreen({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   State<MovieDetailScreen> createState() => _MovieDetailScreenState();
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  late dynamic movie;
+
+  @override
+  void initState() {
+    movie = widget.movie;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,13 +98,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               ),
             ),
             SizedBox(
-              height: 6.h,
+              height: 4.h,
             ),
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
-                child: Image.asset(
-                  "assets/images/img3.jpeg",
+                child: Image.network(
+                  movie["photos"][0] ?? '',
                   height: 30.h,
                 ),
               ),
@@ -98,7 +113,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               height: 2.h,
             ),
             Text(
-              "The Sandman",
+              movie["title"],
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -108,7 +123,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               height: 1.h,
             ),
             Text(
-              "2022\t\tUnited Kingdom",
+              "2022\t\t${movie["region"] ?? ''}",
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
@@ -118,11 +133,12 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               height: 1.h,
             ),
             Wrap(
-              direction: Axis.horizontal,
-              children: [
-                Chip(
+              runSpacing: 2.h,
+              spacing: 10.w,
+              children: (movie["genre"] as List).map((name) {
+                return Chip(
                   label: Text(
-                    "Fantasy",
+                    name,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
@@ -132,72 +148,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   backgroundColor: secondaryColor,
                   surfaceTintColor: secondaryColor,
                   shadowColor: secondaryColor,
-                ),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Chip(
-                  label: Text(
-                    "Fantasy",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: secondaryColor,
-                  surfaceTintColor: secondaryColor,
-                  shadowColor: secondaryColor,
-                ),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Chip(
-                  label: Text(
-                    "Fantasy",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: secondaryColor,
-                  surfaceTintColor: secondaryColor,
-                  shadowColor: secondaryColor,
-                ),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Chip(
-                  label: Text(
-                    "Fantasy",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: secondaryColor,
-                  surfaceTintColor: secondaryColor,
-                  shadowColor: secondaryColor,
-                ),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Chip(
-                  label: Text(
-                    "Fantasy",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: secondaryColor,
-                  surfaceTintColor: secondaryColor,
-                  shadowColor: secondaryColor,
-                )
-              ],
+                );
+              }).toList(),
             ),
             SizedBox(
               height: 2.h,
@@ -210,7 +162,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     SizedBox(
                       height: 4.h,
                       child: Text(
-                        "7.8",
+                        (movie["rating"] ?? 0).toString(),
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w900,
@@ -219,7 +171,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       ),
                     ),
                     Text(
-                      "300",
+                      (movie["ratedBy"].length ?? 0).toString(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
@@ -233,7 +185,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     SizedBox(
                       height: 4.h,
                       child: Text(
-                        "546",
+                        (movie["runtime"] * 60).toString(),
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w900,
@@ -241,7 +193,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       ),
                     ),
                     Text(
-                      "45 min",
+                      "${(movie["runtime"]).toString()} min",
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
@@ -298,7 +250,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.w),
               child: Text(
-                "Upon escaping after decades of imprisonment by a mortal wizard, Dream, the personification of dreams, sets about to reclaim his lost equipment.",
+                movie["summary"],
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
@@ -308,7 +260,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             SizedBox(
               height: 2.h,
             ),
-            VideoImageView(),
+            VideoImageView(
+              videos: movie["videos"],
+              images: movie["photos"],
+            ),
             SizedBox(
               height: 4.h,
             ),

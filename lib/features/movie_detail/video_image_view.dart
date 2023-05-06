@@ -1,11 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:movie_review/features/dahboard/widgets/video_player.dart';
 import 'package:movie_review/features/movie_detail/photo_box.dart';
 import 'package:movie_review/features/movie_detail/video_box.dart';
-import 'package:sizer/sizer.dart';
 
 class VideoImageView extends StatefulWidget {
-  const VideoImageView({super.key});
+  final List<dynamic> videos;
+  final List<dynamic> images;
+  const VideoImageView({
+    Key? key,
+    required this.videos,
+    required this.images,
+  }) : super(key: key);
 
   @override
   State<VideoImageView> createState() => _VideoImageViewState();
@@ -38,22 +46,27 @@ class _VideoImageViewState extends State<VideoImageView>
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: TabBar(
-            isScrollable: true,
-            labelStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
-            controller: _tabController,
-            indicatorWeight: 2,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: Color(0xffF5C518),
-            indicatorPadding:
-                EdgeInsets.symmetric(horizontal: 2.w, vertical: 1),
-            tabs: [
-              Tab(text: 'Videos'),
-              Tab(text: 'Photos'),
-            ],
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            alignment: Alignment.topLeft,
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: TabBar(
+              labelStyle:
+                  TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
+              controller: _tabController,
+              indicatorWeight: 2,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: Color(0xffF5C518),
+              indicatorPadding:
+                  EdgeInsets.symmetric(horizontal: 2.w, vertical: 1),
+              tabs: [
+                Tab(text: 'Videos'),
+                Tab(text: 'Photos'),
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -67,27 +80,22 @@ class _VideoImageViewState extends State<VideoImageView>
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
-                    children: [
-                      VideoBox(),
-                      VideoBox(),
-                      VideoBox(),
-                      VideoBox(),
-                    ],
+                    children: widget.videos.map((video) {
+                      return VideoBox(url: video);
+                    }).toList(),
                   ),
                 ),
-              ); //1st custom tabBarView
+              );
             } else if (_selectedIndex == 1) {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
-                    children: [
-                      PhotoBox(),
-                      PhotoBox(),
-                      PhotoBox(),
-                      PhotoBox(),
-                    ],
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: widget.images.map((url) {
+                      return PhotoBox(url: url);
+                    }).toList(),
                   ),
                 ),
               ); //2nd tabView

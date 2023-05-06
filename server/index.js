@@ -9,6 +9,7 @@ const { API_ENDPOINT_NOT_FOUND_ERR, SERVER_ERR } = require("./errors");
 
 // routes
 const authRoutes = require("./routes/auth.route");
+const movieRouter = require("./routes/movie.route");
 
 
 // init express app
@@ -48,7 +49,7 @@ app.use(
 // routes middlewares
 
 app.use(authRoutes);
-
+app.use(movieRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({
