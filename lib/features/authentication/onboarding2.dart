@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:movie_review/features/authentication/onboarding3.dart';
 
-
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class OnboardingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(
-                    'assets/lottie/my_lottie_file.json',
+                    'assets/animations/my_lottie_file.json',
                     width: 350,
                     height: 350,
                   ),
@@ -30,10 +30,10 @@ class OnboardingScreen extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: SizedBox(
-                    height: 100.0,
+                    height: 50.0,
                     width: double.infinity,
                     child: Text(
-                      'Discover Your Next Favorite Movie',
+                      'Rate the Movies',
                       style: TextStyle(
                         fontFamily: 'SF Pro',
                         color: Color(0xFFFFFFFF),
@@ -47,10 +47,10 @@ class OnboardingScreen extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: SizedBox(
-                    height: 110.0,
+                    height: 70.0,
                     width: double.infinity,
                     child: Text(
-                      'Discover the hidden gems of regional and Indian cinema with our movie review system, and share your love for films with a community of like-minded enthusiasts.',
+                      'Create your profile and share your opinions on the latest movies.',
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontFamily: 'SF Pro',
@@ -67,13 +67,18 @@ class OnboardingScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OnboardingScreen3(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0XFFf5c518),
                       ),
                       child: const Text(
-                        'Get Started',
+                        'Next',
                         style: TextStyle(
                           color: Color(0XFF000000),
                           fontSize: 20.0,
