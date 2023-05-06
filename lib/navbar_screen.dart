@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/dahboard/dashboard_screen.dart';
+import 'package:movie_review/features/dahboard/genre_movies_screen.dart';
+import 'package:movie_review/features/dahboard/search_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,16 +20,13 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
 
   static const List<Widget> _screens = <Widget>[
     DashBoardScreen(),
-    Center(
-      child: Text(
-        'Likes',
-      ),
-    ),
-    Center(
-      child: Text(
-        'Search',
-      ),
-    ),
+    SearchScreen(),
+    GenreMovies(),
+    // Center(
+    //   child: Text(
+    //     'Search',
+    //   ),
+    // ),
     Center(
       child: Text(
         'Profile',
@@ -60,10 +59,10 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
               iconSize: 4.h,
               curve: Curves.linear,
               padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 2.w),
-              tabBackgroundColor: Color(0xffF5C518),
+              tabBackgroundColor: const Color(0xffF5C518),
               color: Colors.white,
               haptic: false,
-              tabs: [
+              tabs: const [
                 GButton(
                   icon: Icons.home,
                 ),
