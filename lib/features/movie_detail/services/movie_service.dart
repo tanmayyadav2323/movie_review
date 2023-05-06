@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/error_handling.dart';
+import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,5 +36,24 @@ class MovieService {
     }
 
     return trndingMovies;
+  }
+
+  Future<void> submitReview(
+      {required BuildContext context, required Review review}) async {
+    try {
+      http.Response res = await http.post(Uri.parse('$uri/api/review-movie'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: review.toJson());
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

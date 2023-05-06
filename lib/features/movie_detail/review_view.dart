@@ -1,10 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:movie_review/features/movie_detail/review_box.dart';
-import 'package:movie_review/features/movie_detail/review_screen.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:movie_review/features/movie_detail/review_box.dart';
+import 'package:movie_review/features/movie_detail/review_screen.dart';
+import 'package:movie_review/features/movie_detail/screens/write_review.dart';
+
 class MovieReview extends StatefulWidget {
-  const MovieReview({super.key});
+  final String movieId;
+  const MovieReview({
+    Key? key,
+    required this.movieId,
+  }) : super(key: key);
 
   @override
   State<MovieReview> createState() => _MovieReviewState();
@@ -84,12 +91,15 @@ class _MovieReviewState extends State<MovieReview>
               ),
             ),
             Spacer(),
-            Icon(
-              Icons.abc,
-              color: Colors.white,
+            GestureDetector(
+              child: Image.asset("assets/images/write_icon.png"),
+              onTap: () {
+                Navigator.of(context).pushNamed(WriteReviewScreeen.routename,
+                    arguments: widget.movieId);
+              },
             ),
             SizedBox(
-              width: 4.w,
+              width: 6.w,
             )
           ],
         ),

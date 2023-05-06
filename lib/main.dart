@@ -52,8 +52,19 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.dark,
         onGenerateRoute: CustomRouter.onGenerateRoute,
         initialRoute: SplashScreen.routename,
-
+        builder: (context, child) => ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child!,
+        ),
       ),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

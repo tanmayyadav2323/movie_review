@@ -37,7 +37,7 @@ const userSchema = new Schema(
       enum: ["ADMIN", "USER"],
       default: "USER",
     },
-    description:String,
+    description: String,
     phoneOtp: String,
   },
   { timestamps: true }

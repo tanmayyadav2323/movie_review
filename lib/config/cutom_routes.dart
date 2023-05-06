@@ -3,6 +3,7 @@ import 'package:movie_review/features/authentication/login_screen.dart';
 import 'package:movie_review/features/authentication/verify_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
+import 'package:movie_review/features/movie_detail/screens/write_review.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -45,6 +46,15 @@ class CustomRouter {
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: ReviewScreen.routename),
           child: ReviewScreen(),
+        );
+      case WriteReviewScreeen.routename:
+        return PageTransition(
+          type: PageTransitionType.bottomToTop,
+          duration: Duration(milliseconds: 500),
+          settings: const RouteSettings(name: WriteReviewScreeen.routename),
+          child: WriteReviewScreeen(
+            movieId: settings.arguments as String,
+          ),
         );
       case LoginPage.routename:
         return MaterialPageRoute(

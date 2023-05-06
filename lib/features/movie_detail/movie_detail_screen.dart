@@ -267,7 +267,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             SizedBox(
               height: 4.h,
             ),
-            MovieReview(),
+            MovieReview(
+              movieId: movie["_id"],
+            ),
             SizedBox(
               height: 4.h,
             ),
