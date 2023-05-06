@@ -5,6 +5,6 @@ class SessionHelper {
   static String password ="";
   static String imageUrl = "";
   static String phone  ="";
-  final String token ="";
-  final String description ="";
+  static String token ="";
+  static String description ="";
 }

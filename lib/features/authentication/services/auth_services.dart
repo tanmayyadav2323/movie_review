@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_review/config/global_variables.dart';
 import 'package:movie_review/models/user_model.dart';
+import 'package:movie_review/navbar_screen.dart';
 import 'package:movie_review/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../config/error_handling.dart';
 import '../../../config/utils.dart';
 
-String userId = "";
+String userId ="";
 
 class AuthService {
   Future<String> authenticateUserPhone(
       {required String phoneNumber, required BuildContext context}) async {
     try {
       User user = User(
-        phone: "",
+        phone: phoneNumber,
         id: "",
         name: "",
         email: "",
@@ -34,6 +35,8 @@ class AuthService {
         },
         body: user.toJson(),
       );
+
+      log(res.toString());
 
       httpErrorHandle(
         response: res,
@@ -52,31 +55,34 @@ class AuthService {
   Future<void> verifyPhoneNumber(
       {required String otp,
       required BuildContext context,
-      required String uId}) async {
+      required String id}) async {
     try {
+      log(id.toString());
       http.Response res = await http.post(
         Uri.parse('$uri/api/verifyPhone'),
-        body: jsonEncode({"otp": otp, "userId": uId}),
+        body: jsonEncode({"otp": otp, "userId": id}),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
       );
       log(res.body.toString());
+      // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () async {
-          showSnackBar(context, "Phone Number Verified!");
+          log("hello");
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          log("hello");
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs
               .setString('x-auth-token', jsonDecode(res.body)["data"]['token'])
               .then((value) {
-            // Navigator.pushNamedAndRemoveUntil(
-            //   context,
-            //   SplashScreen.routename,
-            //   (route) => false,
-            // );
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              NavBarScreeen.routename,
+              (route) => false,
+            );
           });
         },
       );

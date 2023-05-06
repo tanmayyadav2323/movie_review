@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
+  static const routename = '/onboading-screen';
+  const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +75,7 @@ class OnboardingScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0XFFf5c518),

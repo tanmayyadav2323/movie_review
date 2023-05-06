@@ -10,7 +10,7 @@ class User {
   final String phone;
   final String token;
   final String description;
-  
+
   User({
     required this.id,
     required this.name,
@@ -21,8 +21,6 @@ class User {
     required this.token,
     required this.description,
   });
-
-
 
   User copyWith({
     String? id,
@@ -61,20 +59,21 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      email: map['email'] as String,
-      password: map['password'] as String,
-      imageUrl: map['imageUrl'] as String,
-      phone: map['phone'] as String,
-      token: map['token'] as String,
-      description: map['description'] as String,
+      id: map['_id'] ?? "",
+      name: map['name'] ?? "",
+      email: map['email'] ?? "",
+      password: map['password'] ?? "",
+      imageUrl: map['imageUrl'] ?? "",
+      phone: map['phone'] ?? "",
+      token: map['token'] ?? "",
+      description: map['description'] ?? "",
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) => User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -84,27 +83,26 @@ class User {
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.email == email &&
-      other.password == password &&
-      other.imageUrl == imageUrl &&
-      other.phone == phone &&
-      other.token == token &&
-      other.description == description;
+
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.password == password &&
+        other.imageUrl == imageUrl &&
+        other.phone == phone &&
+        other.token == token &&
+        other.description == description;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      email.hashCode ^
-      password.hashCode ^
-      imageUrl.hashCode ^
-      phone.hashCode ^
-      token.hashCode ^
-      description.hashCode;
+        name.hashCode ^
+        email.hashCode ^
+        password.hashCode ^
+        imageUrl.hashCode ^
+        phone.hashCode ^
+        token.hashCode ^
+        description.hashCode;
   }
 }

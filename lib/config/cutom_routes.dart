@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:movie_review/features/authentication/login_screen.dart';
+import 'package:movie_review/features/authentication/onboarding.dart';
+import 'package:movie_review/features/authentication/verify_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../features/Splashscreen/splash_screen.dart';
+
 class CustomRouter {
   static Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case SplashScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: SplashScreen.routename),
+          builder: (_) => const SplashScreen(),
+        );
       case NavBarScreeen.routename:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: '/'),
+          settings: const RouteSettings(name: NavBarScreeen.routename),
           builder: (_) => const NavBarScreeen(),
+        );
+      case VerifyPhoneNumberScreen.routename:
+        return MaterialPageRoute(
+          settings:
+              const RouteSettings(name: VerifyPhoneNumberScreen.routename),
+          builder: (_) => VerifyPhoneNumberScreen(
+            phoneNumber: (settings.arguments! as List<String>)[1],
+            userId: (settings.arguments! as List<String>)[0],
+          ),
         );
       case MovieDetailScreen.routename:
         return PageTransition(
@@ -25,6 +44,16 @@ class CustomRouter {
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: ReviewScreen.routename),
           child: ReviewScreen(),
+        );
+      case LoginPage.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: LoginPage.routename),
+          builder: (_) => LoginPage(),
+        );
+      case OnboardingScreen.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: OnboardingScreen.routename),
+          builder: (_) => const OnboardingScreen(),
         );
       default:
         return _errorRoute();

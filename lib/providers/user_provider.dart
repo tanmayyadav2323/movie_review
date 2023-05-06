@@ -21,7 +21,14 @@ class UserProvider extends ChangeNotifier {
 
   void setUser(String user) {
     _user = User.fromJson(user);
-
+    SessionHelper.id = _user.id;
+    SessionHelper.email = _user.email;
+    SessionHelper.password = _user.password;
+    SessionHelper.imageUrl= _user.imageUrl;
+    SessionHelper.phone = _user.phone;
+    SessionHelper.description= _user.description;
+    SessionHelper.name = _user.name;
+    SessionHelper.token = _user.token;
     notifyListeners();
   }
 
