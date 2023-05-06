@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_review/config/cutom_routes.dart';
 import 'package:movie_review/config/theme_color.dart';
+import 'package:movie_review/features/Splashscreen/splash_screen.dart';
+import 'package:movie_review/features/authentication/login_screen.dart';
 import 'package:movie_review/features/dahboard/dashboard_screen.dart';
 import 'package:movie_review/navbar_screen.dart';
+import 'package:movie_review/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<UserProvider>(
+      create: (context) => UserProvider(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -43,7 +51,8 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: ThemeMode.dark,
         onGenerateRoute: CustomRouter.onGenerateRoute,
-        initialRoute: NavBarScreeen.routename,
+        initialRoute: SplashScreen.routename,
+
       ),
     );
   }

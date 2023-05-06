@@ -1,176 +1,142 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:movie_review/features/authentication/services/auth_services.dart';
+import 'package:movie_review/widgets/custom_button.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:movie_review/features/authentication/square_tile.dart';
+import 'package:movie_review/features/authentication/verify_screen.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
+import '../../config/utils.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
-
-  // text editing controllers
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  // sign user in method
-  void signUserIn() {}
+class LoginPage extends StatefulWidget {
+  static const routename = "/login-page";
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        print("Signature:${signature}");
+      });
+    });
+  }
+
+  final AuthService _authService = AuthService();
+
+  final phoneNumberController = TextEditingController();
+
+  void signUserIn() {}
+  bool isloading = false;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0XFF0a0a0a),
-      body: SafeArea(
-        child: Center(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0XFF0a0a0a),
+        body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
-
-                // logo
-                const Icon(
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Icon(
                   Icons.movie_filter_rounded,
-                  size: 100,
-                  color: Color(0XFFFFFFFF),
+                  size: 12.h,
+                  color: Color(0xffF5C518),
                 ),
-
-                const SizedBox(height: 50),
-
-                // welcome back, you've been missed!
-                const Text(
-                  'Welcome back you\'ve been missed!',
+                Text(
+                  'Movie Mavens',
                   style: TextStyle(
                     color: Color(0xffffffff),
-                    fontSize: 17,
-                    fontFamily: 'SF Pro',
+                    fontSize: 16.sp,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+
+                Text(
+                  'Welcome you\'ve been missed!',
+                  style: TextStyle(
+                    color: Color(0xffffffff),
+                    fontSize: 12.sp,
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                SizedBox(height: 4.h),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
                   child: TextField(
-                    controller: usernameController,
+                    controller: phoneNumberController,
                     obscureText: false,
+                    cursorColor: Colors.white,
+                    onChanged: (value) {
+                      if (value.length == 10) {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: const Color(0xFF202020),
-                        filled: true,
-                        hintText: "Email",
-                        hintStyle: const TextStyle(color: Color(0xFFb4b4b4))),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      fillColor: const Color(0xFF202020),
+                      filled: true,
+                      hintText: "Enter Your Phone Number",
+                      hintStyle: const TextStyle(color: Color(0xFFb4b4b4)),
+                    ),
                   ),
                 ),
 
-                const SizedBox(height: 16),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: const Color(0xFF202020),
-                        filled: true,
-                        hintText: "Password",
-                        hintStyle: const TextStyle(color: Color(0xFFb4b4b4))),
-                  ),
-                ),
-
-                const SizedBox(height: 32),
+                SizedBox(height: 4.h),
 
                 // sign in button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: SizedBox(
-                    height: 60.0,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigate to the next screen or take any other action
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0XFFf5c518),
-                      ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                            fontFamily: 'SF Pro',
-                            color: Color(0XFF000000),
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
+                CustomButton(
+                  text: "Login",
+                  isLoading: isloading,
+                  onPressed: () async {
+                    if (isloading == false) {
+                      setState(() {
+                        isloading = true;
+                      });
+                      if (phoneNumberController.text.length != 10) {
+                        showSnackBar(
+                          context,
+                          "Phone number must be of 10 digits",
+                        );
+                      } else {
+                      String userId =
+                            await _authService.authenticateUserPhone(
+                          phoneNumber: phoneNumberController.text,
+                          context: context,
+                        );
 
-                const SizedBox(height: 50),
-
-                // or continue with
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: const [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Color(0xFFb4b4b4),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Or continue with',
-                          style: TextStyle(color: Color(0xFFb4b4b4)),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Color(0xFFb4b4b4),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 50),
-
-                // google + apple sign in buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    // google button
-                    SquareTile(imagePath: 'assets/images/google.png'),
-
-                    SizedBox(width: 25),
-
-                    // apple button
-                    // SquareTile(imagePath: 'assets/images/apple.png')
-                  ],
-                ),
-
-                const SizedBox(height: 50),
-
-                // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Don\'t have Account?',
-                      style: TextStyle(color: Color(0xFFb4b4b4)),
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      'Register now',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                        Navigator.of(context).pushNamed(
+                          VerifyPhoneNumberScreen.routename,
+                          arguments: [userId, phoneNumberController.text],
+                        ).then((value) {});
+                      }
+                      setState(() {
+                        isloading = false;
+                      });
+                    }
+                  },
                 )
               ],
             ),

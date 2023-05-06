@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fast-two-sms": "^3.0.0",
+    "is-ci": "^3.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.2",
+    "update-notifier": "^6.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22"
+  }
+}
