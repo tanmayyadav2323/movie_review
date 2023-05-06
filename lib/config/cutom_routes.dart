@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/authentication/login_screen.dart';
-import 'package:movie_review/features/authentication/onboarding.dart';
 import 'package:movie_review/features/authentication/verify_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
@@ -49,11 +48,6 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: LoginPage.routename),
           builder: (_) => LoginPage(),
-        );
-      case OnboardingScreen.routename:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: OnboardingScreen.routename),
-          builder: (_) => const OnboardingScreen(),
         );
       default:
         return _errorRoute();
