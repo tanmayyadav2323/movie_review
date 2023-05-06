@@ -42,7 +42,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   height: 4.h,
                 ),
                 Align(
-                  child: ReviewBox(),
+                  // child: ReviewBox(),
                   alignment: Alignment.center,
                 ),
                 SizedBox(

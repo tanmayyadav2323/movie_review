@@ -1,8 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/review_model.dart';
+
 class ReviewBox extends StatefulWidget {
-  const ReviewBox({super.key});
+  final Review review;
+  const ReviewBox({
+    Key? key,
+    required this.review,
+  }) : super(key: key);
 
   @override
   State<ReviewBox> createState() => _ReviewBoxState();
@@ -30,7 +37,7 @@ class _ReviewBoxState extends State<ReviewBox> {
             Row(
               children: [
                 Text(
-                  "fraser-simons",
+                  widget.review.name.isEmpty ? "Guest" : widget.review.name,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
@@ -59,25 +66,27 @@ class _ReviewBoxState extends State<ReviewBox> {
               height: 2.h,
             ),
             Text(
-              "A series of two halves ",
+              widget.review.title,
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Text(
-              "Warning: Spoilers ",
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w600,
-                color: Color(0xffFF0000),
+            if (widget.review.spolier)
+              Text(
+                "Warning: Spoilers ",
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xffFF0000),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
+            if (widget.review.spolier)
+              SizedBox(
+                height: 1.h,
+              ),
             Text(
-              "Review",
+              widget.review.desciption,
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,

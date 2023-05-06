@@ -5,12 +5,18 @@ import 'package:sizer/sizer.dart';
 import 'package:movie_review/features/movie_detail/review_box.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/write_review.dart';
+import 'package:movie_review/models/review_model.dart';
 
 class MovieReview extends StatefulWidget {
   final String movieId;
+  final List<Review> userReview;
+  final List<Review> criticReview;
+
   const MovieReview({
     Key? key,
     required this.movieId,
+    required this.userReview,
+    required this.criticReview,
   }) : super(key: key);
 
   @override
@@ -93,9 +99,21 @@ class _MovieReviewState extends State<MovieReview>
             Spacer(),
             GestureDetector(
               child: Image.asset("assets/images/write_icon.png"),
-              onTap: () {
-                Navigator.of(context).pushNamed(WriteReviewScreeen.routename,
-                    arguments: widget.movieId);
+              onTap: () async {
+                await Navigator.of(context)
+                    .pushNamed(WriteReviewScreeen.routename,
+                        arguments: widget.movieId)
+                    .then((review) {
+                  if (review != null) {
+                    Review re = review as Review;
+                    if (re.userReview) {
+                      widget.userReview.add(re);
+                    } else {
+                      widget.criticReview.add(re);
+                    }
+                    setState(() {});
+                  }
+                });
               },
             ),
             SizedBox(
@@ -114,18 +132,11 @@ class _MovieReviewState extends State<MovieReview>
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
-                    children: [
-                      GestureDetector(
-                        child: ReviewBox(),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(ReviewScreen.routename);
-                        },
-                      ),
-                      ReviewBox(),
-                      ReviewBox(),
-                      ReviewBox(),
-                    ],
+                    children: widget.userReview.map((review) {
+                      return ReviewBox(
+                        review: review,
+                      );
+                    }).toList(),
                   ),
                 ),
               ); //1st custom tabBarView
@@ -135,12 +146,11 @@ class _MovieReviewState extends State<MovieReview>
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Row(
-                    children: [
-                      ReviewBox(),
-                      ReviewBox(),
-                      ReviewBox(),
-                      ReviewBox(),
-                    ],
+                    children: widget.criticReview.map((review) {
+                      return ReviewBox(
+                        review: review,
+                      );
+                    }).toList(),
                   ),
                 ),
               ); //2nd tabView

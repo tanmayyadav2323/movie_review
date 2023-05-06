@@ -22,8 +22,6 @@ class MovieService {
         },
       );
 
-      log(res.toString());
-
       httpErrorHandle(
         response: res,
         context: context,
@@ -55,5 +53,38 @@ class MovieService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<List<Review>> getReviews(
+      {required BuildContext context, required List<dynamic> reviewIds}) async {
+    List<Review> reviews = [];
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/find-review'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({"reviewIds": reviewIds}),
+      );
+
+      log(res.body);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            reviews.add(Review.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return reviews;
   }
 }

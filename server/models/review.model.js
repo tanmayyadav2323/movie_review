@@ -3,11 +3,26 @@ const { model, Schema } = require("mongoose");
 
 const reviewSchema = new Schema(
     {
+
         movieId: {
             type: String,
 
         },
+        title: {
+            type: String,
 
+        },
+        name: {
+            type: String,
+        },
+        url: {
+            type: String
+        }
+        ,
+        userId: {
+            type: String,
+
+        },
         description: {
             type: String,
 

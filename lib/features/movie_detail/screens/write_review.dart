@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:movie_review/config/session_helper.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:movie_review/config/theme_color.dart';
@@ -23,6 +24,7 @@ class WriteReviewScreeen extends StatefulWidget {
 
 class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
   final TextEditingController controller = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   String _selectedOption = 'User Review';
 
   String _spolierSelection = 'No';
@@ -57,10 +59,13 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                     height: 4.h,
                   ),
                   TextField(
-                    controller: controller,
+                    controller: titleController,
                     obscureText: false,
                     cursorColor: Colors.white,
                     onChanged: (value) {},
+                    onSubmitted: (_) {
+                      _focusNode.requestFocus();
+                    },
                     maxLength: 20,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
@@ -77,6 +82,7 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                   ),
                   TextField(
                     controller: controller,
+                    focusNode: _focusNode,
                     obscureText: false,
                     cursorColor: Colors.white,
                     onChanged: (value) {},
@@ -202,6 +208,7 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                     height: 4.h,
                   ),
                   CustomButton(
+                    isLoading: isLoading,
                     onPressed: () async {
                       if (controller.text.length == 0) {
                         showSnackBar(context, "Please Enter Review");
@@ -210,23 +217,28 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                       if (isLoading) return;
                       isLoading = true;
                       setState(() {});
+                      Review review = Review(
+                        name: "",
+                        url: "",
+                        userId: SessionHelper.id,
+                        title: titleController.text,
+                        movieId: widget.movieId,
+                        id: "",
+                        desciption: controller.text,
+                        spolier: sploier,
+                        userReview: userReview,
+                        comments: [],
+                      );
                       await MovieService()
                           .submitReview(
                         context: context,
-                        review: Review(
-                          movieId: widget.movieId,
-                          id: "",
-                          desciption: controller.text,
-                          spolier: sploier,
-                          userReview: userReview,
-                          comments: [],
-                        ),
+                        review: review,
                       )
                           .then((value) {
                         setState(() {
                           isLoading = false;
                         });
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(review);
                       });
                     },
                     text: "Save",
