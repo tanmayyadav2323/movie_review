@@ -139,6 +139,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                         Navigator.of(context).pop();
                                       });
                                       userratd = true;
+                                      userrating = val;
                                       setState(() {});
                                     },
                                   ),

@@ -20,10 +20,12 @@ class CategoryContainer extends StatefulWidget {
 
 class _CategoryContainerState extends State<CategoryContainer> {
   late Cs.Category category;
-  
+
   @override
   void initState() {
     category = widget.category;
+    category.movies
+        .sort((a, b) => (b['rating'] ?? 0).compareTo(a['rating'] ?? 0));
     super.initState();
   }
 

@@ -48,62 +48,66 @@ class _MovieBoxState extends State<MovieBox> {
               width: 40.w,
               height: 27.h,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Text(
-                    widget.name,
-                    style:
-                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 2.w, vertical: 1.h),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 2.h,
-                              color: Color(0xffF5C518),
-                            ),
-                            SizedBox(
-                              width: 1.w,
-                            ),
-                            Text(widget.rating.toString())
-                          ],
-                        ),
+            SizedBox(
+              width: 40.w,
+              height: 13.h,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    SizedBox(
+                      child: Text(
+                        widget.name,
+                        style: TextStyle(
+                            fontSize: 12.sp, fontWeight: FontWeight.w500),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Spacer(),
-                      Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                ],
+                    ),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: 2.h,
+                                color: Color(0xffF5C518),
+                              ),
+                              SizedBox(
+                                width: 1.w,
+                              ),
+                              Text(widget.rating.toString())
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
