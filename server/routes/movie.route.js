@@ -49,8 +49,8 @@ movieRouter.post("/api/review-movie", async (req, res, next) => {
 
         movie.reviewIds.push(review._id);
         await movie.updateOne({ reviewIds: movie.reviewIds });
-
-        res.json({ message: 'Review added successfully.' });
+        console.log(review);
+        res.json(review);
 
     } catch (e) {
         console.log(e);
@@ -98,7 +98,7 @@ movieRouter.post("/api/comment", async (req, res, next) => {
         await comment.save();
         review.comments.push(comment._id);
         await review.save();
-        res.json();
+        res.json(comment);
     } catch (e) {
         console.log(e);
         res.status(500).json({ error: e.message });

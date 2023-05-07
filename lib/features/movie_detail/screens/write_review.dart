@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/session_helper.dart';
 import 'package:sizer/sizer.dart';
@@ -210,36 +212,33 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                   CustomButton(
                     isLoading: isLoading,
                     onPressed: () async {
-                      if (controller.text.length == 0) {
+                      if (controller.text.isEmpty) {
                         showSnackBar(context, "Please Enter Review");
                         return;
                       }
                       if (isLoading) return;
                       isLoading = true;
                       setState(() {});
-                      Review review = Review(
-                        name: "",
-                        url: "",
-                        userId: SessionHelper.id,
-                        title: titleController.text,
-                        movieId: widget.movieId,
-                        id: "",
-                        desciption: controller.text,
-                        spolier: sploier,
-                        userReview: userReview,
-                        comments: [],
-                      );
-                      await MovieService()
-                          .submitReview(
+                      Review? review = await MovieService().submitReview(
                         context: context,
-                        review: review,
-                      )
-                          .then((value) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        Navigator.of(context).pop(review);
+                        review: Review(
+                          name: "",
+                          url: "",
+                          userId: SessionHelper.id,
+                          title: titleController.text,
+                          movieId: widget.movieId,
+                          id: "",
+                          desciption: controller.text,
+                          spolier: sploier,
+                          userReview: userReview,
+                          comments: [],
+                        ),
+                      );
+                      log("hey" + review.toString());
+                      setState(() {
+                        isLoading = false;
                       });
+                      Navigator.of(context).pop(review);
                     },
                     text: "Save",
                   ),

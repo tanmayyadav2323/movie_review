@@ -81,20 +81,19 @@ class _CommentScreenState extends State<CommentScreen> {
                       if (loading) return;
                       loading = true;
                       setState(() {});
-                      Comment comment = Comment(
-                        imageUrl: "",
-                        userId: SessionHelper.id,
-                        name: "",
-                        id: "",
-                        description: commentController.text,
-                        likes: [],
-                        dislikes: [],
-                        replies: [],
-                      );
-                      await MovieService().submitComment(
+                      Comment? comment = await MovieService().submitComment(
                         context: context,
                         reviewId: widget.reviewId,
-                        comment: comment,
+                        comment: Comment(
+                          imageUrl: "",
+                          userId: SessionHelper.id,
+                          name: "",
+                          id: "",
+                          description: commentController.text,
+                          likes: [],
+                          dislikes: [],
+                          replies: [],
+                        ),
                       );
                       Navigator.of(context).pop(comment);
                     },

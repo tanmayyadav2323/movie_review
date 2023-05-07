@@ -37,23 +37,29 @@ class MovieService {
     return trndingMovies;
   }
 
-  Future<void> submitReview(
+  Future<Review?> submitReview(
       {required BuildContext context, required Review review}) async {
+    Review? resreview;
     try {
-      http.Response res = await http.post(Uri.parse('$uri/api/review-movie'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: review.toJson());
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/review-movie'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: review.toJson(),
+      );
 
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {},
+        onSuccess: () {
+          resreview = Review.fromJson(res.body);
+        },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+    return resreview;
   }
 
   Future<List<Review>> getReviews(
@@ -89,10 +95,11 @@ class MovieService {
     return reviews;
   }
 
-  Future<void> submitComment(
+  Future<Comment?> submitComment(
       {required BuildContext context,
       required String reviewId,
       required Comment comment}) async {
+    Comment? rescomment;
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/api/comment'),
@@ -114,11 +121,14 @@ class MovieService {
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {},
+        onSuccess: () {
+          rescomment = Comment.fromJson(res.body);
+        },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+    return rescomment;
   }
 
   Future<List<Comment>> getComment(
@@ -179,9 +189,7 @@ class MovieService {
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
-    
-        },
+        onSuccess: () {},
       );
     } catch (e) {
       showSnackBar(context, e.toString());
