@@ -18,7 +18,7 @@ class OnboardingScreen1 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(
-                    'assets/animations/my_lottie_file.json',
+                    'assets/animations/discover_lottie.json',
                     width: 350,
                     height: 350,
                   ),
