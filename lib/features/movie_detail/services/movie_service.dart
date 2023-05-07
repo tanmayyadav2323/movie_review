@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/error_handling.dart';
 import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/models/user_model.dart';
 import 'package:http/http.dart' as http;
-
+import '../../../models/category_model.dart' as Cs;
 import '../../../config/global_variables.dart';
 import '../../../config/utils.dart';
 import '../../../models/comment_model.dart';
@@ -35,6 +36,37 @@ class MovieService {
     }
 
     return trndingMovies;
+  }
+
+  Future<List<Cs.Category>> getCategoryMovies(
+      {required BuildContext context}) async {
+    List<Cs.Category> categoryMovies = [];
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/get-category'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            categoryMovies.add(Cs.Category.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return categoryMovies;
   }
 
   Future<Review?> submitReview(

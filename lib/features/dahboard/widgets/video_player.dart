@@ -23,7 +23,7 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.movie["videos"][0]);
+    _controller = VideoPlayerController.network(widget.movie["videolink"]);
     // ..initialize().then((_) {
     //   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
     //   _controller.setVolume(0);
@@ -51,7 +51,7 @@ class _VideoAppState extends State<VideoApp> {
                           _controller,
                         )
                       : Container(
-                          child: Image.network(widget.movie["photos"][0]),
+                          child: Image.network(widget.movie["thumbnail"]),
                         ),
                 ),
               ),

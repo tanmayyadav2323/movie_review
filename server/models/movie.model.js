@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    releaseDate: { type: Date, required: true },
+    releaseDate: { type: String, required: true },
     summary: { type: String, required: true },
-    genre: [{ type: String, required: true }],
+    genre: [{ type: String }],
     language: { type: String, required: true },
     rating: { type: Number, default: null },
     runtime: { type: Number, required: true },
@@ -34,10 +34,11 @@ const movieSchema = new mongoose.Schema({
     region: { type: String, required: true },
     ratedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     reviewIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }],
+    storyline: [String]
 }, {
-    collection: 'trending'
+    collection: 'movies'
 });
 
-const Movie = mongoose.model('trending', movieSchema);
+const Movie = mongoose.model('movies', movieSchema);
 
 module.exports = Movie;

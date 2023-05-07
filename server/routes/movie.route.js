@@ -4,8 +4,9 @@ const Review = require("../models/review.model");
 const User = require("../models/user.model");
 const Movie = require("../models/movie.model");
 const { Comment, Reply } = require("../models/comment.model");
+const Category = require("../models/category.model");
 const MongoClient = require('mongodb').MongoClient;
-
+const Movieview = require("../models/movieview.model");
 
 movieRouter.get("/api/trending-movies", async (req, res, next) => {
     try {
@@ -158,5 +159,109 @@ movieRouter.post("/api/update-comment", async (req, res, next) => {
         res.status(500).json({ error: e.message });
     }
 });
+
+
+movieRouter.post("/api/add-category", async (req, res, next) => {
+    try {
+        let category = Category(
+            { name: req.body.name, movies: [], image: req.body.image, title: req.body.title }
+        );
+
+        category.save();
+        res.json(category);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/add-category-movie", async (req, res, next) => {
+    try {
+        let category = Category.findOne({ name: req.body.name });
+        req.body.movies.forEach(function (movie) {
+            category.movies.push(movie);
+        });
+        category.save();
+        res.json(category);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+
+movieRouter.post("/api/add-category-movie", async (req, res, next) => {
+    try {
+        let category = Category.findOne({ name: req.body.name });
+        req.body.movies.forEach(function (movie) {
+            category.movies.push(movie);
+        });
+        category.save();
+        res.json(category);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/add-movie", async (req, res, next) => {
+    try {
+        const movie = Movie({
+            title: req.body.title,
+            releaseDate: req.body.releaseDate,
+            summary: req.body.summary,
+            genre: req.body.genre,
+            language: req.body.language,
+            rating: req.body.rating,
+            runtime: req.body.runtime,
+            videos: req.body.videos,
+            photos: req.body.photos,
+            awards: req.body.awards,
+            cast: req.body.cast,
+            director: req.body.director,
+            writers: req.body.writers,
+            budget: req.body.budget,
+            boxOfficeCollection: req.body.boxOfficeCollection,
+            region: req.body.region,
+            ratedBy: req.body.ratedBy,
+            reviewIds: req.body.reviewIds,
+            storyline: req.body.storyline
+        });
+
+        await movie.save();
+
+        const movieview = Movieview({
+            title: req.body.title,
+            videolink: req.body.videos[0],
+            thumbnail: req.body.photos[0],
+            detail: movie._id,
+        });
+        await movieview.save();
+
+        for (let i = 0; i < req.body.genre.length; i++) {
+            const category = await Category.findOne({ name: req.body.genre[i] });
+            category.movies.push(movieview._id);
+            await category.save();
+        }
+
+        res.json(movieview);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
+movieRouter.post("/api/get-category", async (req, res, next) => {
+    try {
+        const categories = await Category.find().populate('movies');
+        res.json(categories);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 
 module.exports = movieRouter;

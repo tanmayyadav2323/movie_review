@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/dahboard/widgets/video_player.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
@@ -8,6 +9,7 @@ import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:movie_review/widgets/category_container.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
+import '../../../models/category_model.dart' as Cs;
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -18,22 +20,29 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   final MovieService movieService = MovieService();
+  List<Cs.Category> categoryMovies = [];
   List<dynamic> trendingMovies = [];
   bool loading = false;
 
   @override
   void initState() {
-    getTrendingMovies();
+    getCategoryMovies();
     super.initState();
   }
 
-  void getTrendingMovies() async {
+  void getCategoryMovies() async {
     loading = true;
     setState(() {});
-    trendingMovies = await movieService.getTrendingMovies(context: context);
+    categoryMovies = await movieService.getCategoryMovies(context: context);
+    for (int i = 0; i < categoryMovies.length; i++) {
+      if (categoryMovies[i].name == "Trending") {
+        trendingMovies.addAll(categoryMovies[i].movies);
+      }
+    }
+    log("category");
+    log(trendingMovies.toString());
     loading = false;
     setState(() {});
-    log(trendingMovies.toString());
   }
 
   @override
@@ -91,7 +100,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  CategoryContainer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: categoryMovies.map((category) {
+                      if (category.name == "Trending") {
+                        return SizedBox.shrink();
+                      } else {
+                        return CategoryContainer(category: category);
+                      }
+                    }).toList(),
+                  )
                 ],
               ),
             ),
