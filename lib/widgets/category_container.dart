@@ -20,6 +20,7 @@ class CategoryContainer extends StatefulWidget {
 
 class _CategoryContainerState extends State<CategoryContainer> {
   late Cs.Category category;
+  
   @override
   void initState() {
     category = widget.category;
@@ -77,6 +78,7 @@ class _CategoryContainerState extends State<CategoryContainer> {
                     imagename: movie["thumbnail"],
                     name: movie["title"],
                     rating: movie["rating"] ?? 0,
+                    id: movie["detail"],
                   );
                 }).toList(),
               ),

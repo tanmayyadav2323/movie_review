@@ -16,6 +16,7 @@ const movieRouter = require("./routes/movie.route");
 const app = express();
 app.use(express.json());
 
+
 app.get("/first", (req, res) => {
   res.status(200).json({
     type: "success",
@@ -26,6 +27,7 @@ app.get("/first", (req, res) => {
 
 
 // middlewares
+app.options("/api/add-movie");
 app.use(
   cors({
     credentials: true,

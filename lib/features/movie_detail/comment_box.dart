@@ -1,4 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/session_helper.dart';
 import 'package:movie_review/features/movie_detail/services/movie_service.dart';
@@ -139,6 +142,7 @@ class _CommentBoxState extends State<CommentBox> {
                 onTap: () {
                   widget.comment.replies.add(
                     Reply(
+                      id: "",
                       name: SessionHelper.name,
                       imageUrl: SessionHelper.imageUrl,
                       userId: SessionHelper.id,
@@ -188,39 +192,52 @@ class _CommentBoxState extends State<CommentBox> {
           ),
           if (isClosed)
             Column(
-              children: widget.comment.replies
-                  .map((reply) => Column(
-                        children: [
-                          SizedBox(
-                            height: 1.h,
+              children: widget.comment.replies.map((reply) {
+                String jsonString = reply;
+
+                Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+                Map<String, String> myMap = Map<String, String>.from({
+                  'name': jsonMap['name'],
+                  'imageUrl': jsonMap['imageUrl'],
+                  'userId': jsonMap['userId'],
+                  'description': jsonMap['desciption']
+                });
+                String name = myMap["name"] ?? "";
+                String description = myMap["description"] ?? "";
+                if (name == "") name = "Guest";
+
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white.withOpacity(0.8),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                reply.name == "" ? "Guest" : reply.name,
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white.withOpacity(0.8),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 0.4.h,
-                              ),
-                              Text(
-                                reply.desciption,
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white.withOpacity(0.6),
-                                ),
-                              ),
-                            ],
+                        ),
+                        SizedBox(
+                          height: 0.4.h,
+                        ),
+                        Text(
+                          description,
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white.withOpacity(0.6),
                           ),
-                        ],
-                      ))
-                  .toList(),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           SizedBox(
             height: 2.h,

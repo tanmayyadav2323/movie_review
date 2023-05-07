@@ -33,7 +33,7 @@ const movieSchema = new mongoose.Schema({
     boxOfficeCollection: { type: String, required: true },
     region: { type: String, required: true },
     ratedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
-    reviewIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }],
+    reviewIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
     storyline: [String]
 }, {
     collection: 'movies'

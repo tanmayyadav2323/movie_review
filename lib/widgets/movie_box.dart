@@ -9,12 +9,14 @@ class MovieBox extends StatefulWidget {
   final String imagename;
   final String name;
   final int rating;
+  final String id;
 
   const MovieBox({
     Key? key,
     required this.imagename,
     required this.name,
     required this.rating,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,10 @@ class _MovieBoxState extends State<MovieBox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(MovieDetailScreen.routename);
+        Navigator.of(context).pushNamed(
+          MovieDetailScreen.routename,
+          arguments: widget.id,
+        );
       },
       child: Container(
         width: 40.w,

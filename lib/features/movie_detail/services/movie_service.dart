@@ -175,7 +175,6 @@ class MovieService {
         body: jsonEncode({"reviewId": reviewId}),
       );
 
-      log(res.body);
 
       httpErrorHandle(
         response: res,
@@ -193,7 +192,36 @@ class MovieService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+    log("checkkkk");
+    log(comments.toString());
     return comments;
+  }
+
+  Future<dynamic> getMovieById(
+      {required BuildContext context, required String id}) async {
+    Map<String, dynamic> mp = {};
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/get-movie'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          "id": id,
+        }),
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          mp = jsonDecode(res.body);
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return mp;
   }
 
   Future<void> updateComment(

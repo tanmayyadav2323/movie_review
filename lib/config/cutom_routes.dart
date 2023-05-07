@@ -39,7 +39,7 @@ class CustomRouter {
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: MovieDetailScreen.routename),
           child: MovieDetailScreen(
-            movie: settings.arguments as dynamic,
+            id: settings.arguments as String,
           ),
         );
       case ReviewScreen.routename:

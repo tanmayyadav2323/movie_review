@@ -7,9 +7,12 @@ import '../../models/review_model.dart';
 
 class ReviewBox extends StatefulWidget {
   final Review review;
+  final bool expand;
+
   const ReviewBox({
     Key? key,
     required this.review,
+    this.expand = false,
   }) : super(key: key);
 
   @override
@@ -27,7 +30,7 @@ class _ReviewBoxState extends State<ReviewBox> {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 2.w),
         width: MediaQuery.of(context).size.width * 0.8,
-        height: 20.h,
+        height: 24.h,
         decoration: BoxDecoration(
           color: Color(0xff171717),
           borderRadius: BorderRadius.circular(20),
@@ -51,21 +54,6 @@ class _ReviewBoxState extends State<ReviewBox> {
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    "8",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xffF5C518),
-                    ),
-                  ),
-                  Text(
-                    " / 10",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
                 ],
               ),
               SizedBox(
@@ -91,11 +79,15 @@ class _ReviewBoxState extends State<ReviewBox> {
                 SizedBox(
                   height: 1.h,
                 ),
-              Text(
-                widget.review.desciption,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
+              Flexible(
+                child: Text(
+                  widget.review.desciption,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 3,
                 ),
               )
             ],

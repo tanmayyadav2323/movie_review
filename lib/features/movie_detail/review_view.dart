@@ -135,6 +135,7 @@ class _MovieReviewState extends State<MovieReview>
                     children: widget.userReview.map((review) {
                       return ReviewBox(
                         review: review,
+                      
                       );
                     }).toList(),
                   ),

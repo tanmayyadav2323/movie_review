@@ -81,7 +81,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             MovieDetailScreen.routename,
-                            arguments: trendingMovies[index],
+                            arguments: trendingMovies[index]["detail"],
                           );
                         },
                       );

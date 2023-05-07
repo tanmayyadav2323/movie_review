@@ -16,11 +16,11 @@ import 'package:movie_review/features/movie_detail/video_image_view.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   static const routename = "movie-detail-screen";
-  final dynamic movie;
+  final String id;
 
   const MovieDetailScreen({
     Key? key,
-    required this.movie,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -28,6 +28,7 @@ class MovieDetailScreen extends StatefulWidget {
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  late String id;
   late dynamic movie;
   List<Review> reviews = [];
   final MovieService movieService = MovieService();
@@ -38,28 +39,41 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   @override
   void initState() {
-    movie = widget.movie;
-    getReviews();
+    id = widget.id;
+    getData();
     super.initState();
   }
 
-  getReviews() async {
-    await movieService
-        .getReviews(
-      context: context,
-      reviewIds: movie["reviewIds"],
-    )
-        .then((reviews) {
-      loading = false;
-      for (var review in reviews) {
-        if (review.userReview) {
-          userReviews.add(review);
-        } else {
-          criticReviews.add(review);
-        }
+  getData() async {
+    movie = await movieService.getMovieById(context: context, id: id);
+    log(movie.toString());
+    for (var data in movie["reviewIds"]) {
+      Review review = Review.fromMap(data);
+      if (review.userReview) {
+        userReviews.add(review);
+      } else {
+        criticReviews.add(review);
       }
-      setState(() {});
-    });
+    }
+    // }
+    // await movieService
+    //     .getReviews(
+    //   context: context,
+    //   reviewIds: movie["reviewIds"],
+    // )
+    //     .then((reviews) {
+    //   loading = false;
+    //   for (var review in reviews) {
+    //     if (review.userReview) {
+    //       userReviews.add(review);
+    //     } else {
+    //       criticReviews.add(review);
+    //     }
+    //   }
+    //   setState(() {});
+    // });
+    loading = false;
+    setState(() {});
   }
 
   @override

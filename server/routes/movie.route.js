@@ -110,6 +110,7 @@ movieRouter.post("/api/find-comment", async (req, res, next) => {
     try {
         const reviewId = req.body.reviewId;
         let review = await Review.findById(reviewId);
+
         // Get all comments for the review
         const comments = await Comment.find({
             _id: { $in: review.comments },
@@ -257,6 +258,16 @@ movieRouter.post("/api/get-category", async (req, res, next) => {
     try {
         const categories = await Category.find().populate('movies');
         res.json(categories);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/get-movie", async (req, res, next) => {
+    try {
+        const movie = await Movie.findById(req.body.id).populate("reviewIds");
+        res.json(movie);
     } catch (e) {
         console.log(e);
         res.status(500).json({ error: e.message });

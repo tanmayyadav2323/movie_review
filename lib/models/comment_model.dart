@@ -8,7 +8,7 @@ class Comment {
   final String description;
   final List<String> likes;
   final List<String> dislikes;
-  final List<Reply> replies;
+  final List<dynamic> replies;
   final String userId;
   final String name;
   final String imageUrl;
@@ -28,7 +28,7 @@ class Comment {
     String? description,
     List<String>? likes,
     List<String>? dislikes,
-    List<Reply>? replies,
+    List<dynamic>? replies,
     String? userId,
     String? name,
     String? imageUrl,
@@ -64,11 +64,7 @@ class Comment {
       description: map['description'] ?? "",
       likes: List<String>.from((map['likes'] as List<dynamic>)),
       dislikes: List<String>.from((map['dislikes'] as List<dynamic>)),
-      replies: List<Reply>.from(
-        (map['replies']).map<Reply>(
-          (x) => Reply.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      replies: map["replies"] ?? [],
       userId: map['userId'] ?? "",
       name: map['name'] ?? "",
       imageUrl: map['imageUrl'] ?? "",
@@ -117,11 +113,13 @@ class Reply {
   final String imageUrl;
   final String userId;
   final String desciption;
+  final String id;
   Reply({
     required this.name,
     required this.imageUrl,
     required this.userId,
     required this.desciption,
+    required this.id,
   });
 
   Reply copyWith({
@@ -129,12 +127,14 @@ class Reply {
     String? imageUrl,
     String? userId,
     String? desciption,
+    String? id,
   }) {
     return Reply(
       name: name ?? this.name,
       imageUrl: imageUrl ?? this.imageUrl,
       userId: userId ?? this.userId,
       desciption: desciption ?? this.desciption,
+      id: id ?? this.id,
     );
   }
 
@@ -144,15 +144,17 @@ class Reply {
       'imageUrl': imageUrl,
       'userId': userId,
       'desciption': desciption,
+      'id': id,
     };
   }
 
   factory Reply.fromMap(Map<String, dynamic> map) {
     return Reply(
-      name: map['name'] as String,
-      imageUrl: map['imageUrl'] as String,
-      userId: map['userId'] as String,
-      desciption: map['desciption'] as String,
+      name: map['name'] ?? "",
+      imageUrl: map['imageUrl'] ?? "",
+      userId: map['userId'] ?? "",
+      desciption: map['desciption'] ?? "",
+      id: map['_id'] ?? "",
     );
   }
 
@@ -163,7 +165,7 @@ class Reply {
 
   @override
   String toString() {
-    return 'Reply(name: $name, imageUrl: $imageUrl, userId: $userId, desciption: $desciption)';
+    return 'Reply(name: $name, imageUrl: $imageUrl, userId: $userId, desciption: $desciption, id: $id)';
   }
 
   @override
@@ -173,7 +175,8 @@ class Reply {
     return other.name == name &&
         other.imageUrl == imageUrl &&
         other.userId == userId &&
-        other.desciption == desciption;
+        other.desciption == desciption &&
+        other.id == id;
   }
 
   @override
@@ -181,6 +184,7 @@ class Reply {
     return name.hashCode ^
         imageUrl.hashCode ^
         userId.hashCode ^
-        desciption.hashCode;
+        desciption.hashCode ^
+        id.hashCode;
   }
 }
