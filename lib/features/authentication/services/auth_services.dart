@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_review/config/global_variables.dart';
+import 'package:movie_review/features/authentication/login_screen.dart';
 import 'package:movie_review/models/user_model.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:movie_review/providers/user_provider.dart';
@@ -11,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../config/error_handling.dart';
 import '../../../config/utils.dart';
 
-String userId ="";
+String userId = "";
 
 class AuthService {
   Future<String> authenticateUserPhone(
@@ -130,11 +131,11 @@ class AuthService {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.setString('x-auth-token', '');
-      // Navigator.pushNamedAndRemoveUntil(
-      //   context,
-      //   LoginScreen.routename,
-      //   (route) => false,
-      // );
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginPage.routename,
+        (route) => false,
+      );
     } catch (e) {
       showSnackBar(context, e.toString());
     }

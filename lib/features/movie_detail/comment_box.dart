@@ -76,7 +76,9 @@ class _CommentBoxState extends State<CommentBox> {
                   children: [
                     Icon(
                       Icons.thumb_up,
-                      color: Colors.white,
+                      color: widget.comment.likes.contains(SessionHelper.id)
+                          ? Colors.white
+                          : Colors.white.withOpacity(0.3),
                     ),
                     SizedBox(
                       height: 1.h,
@@ -105,7 +107,9 @@ class _CommentBoxState extends State<CommentBox> {
                   children: [
                     Icon(
                       Icons.thumb_down,
-                      color: Colors.white.withOpacity(0.3),
+                      color: widget.comment.dislikes.contains(SessionHelper.id)
+                          ? Colors.white
+                          : Colors.white.withOpacity(0.3),
                     ),
                     SizedBox(
                       height: 1.h,
@@ -140,15 +144,19 @@ class _CommentBoxState extends State<CommentBox> {
               hintStyle: TextStyle(color: Color(0xFFb4b4b4), fontSize: 12.sp),
               suffixIcon: GestureDetector(
                 onTap: () {
-                  widget.comment.replies.add(
-                    Reply(
-                      id: "",
-                      name: SessionHelper.name,
-                      imageUrl: SessionHelper.imageUrl,
-                      userId: SessionHelper.id,
-                      desciption: _replyController.text,
-                    ),
+                  Reply reply = Reply(
+                    id: "",
+                    name: SessionHelper.name,
+                    imageUrl: SessionHelper.imageUrl,
+                    userId: SessionHelper.id,
+                    desciption: _replyController.text,
                   );
+
+                  String jsonString = jsonEncode(reply.toMap());
+                  log(jsonString);
+                  try {
+                    widget.comment.replies.add(jsonString);
+                  } catch (e) {}
                   updateComment();
                   _replyController.clear();
                   FocusScope.of(context).unfocus();

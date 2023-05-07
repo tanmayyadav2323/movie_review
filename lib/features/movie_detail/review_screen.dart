@@ -249,7 +249,9 @@ class _CustomReviewBoxState extends State<CustomReviewBox> {
                       },
                       child: Icon(
                         Icons.thumb_up,
-                        color: Colors.white,
+                        color: likes.contains(SessionHelper.id)
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.3),
                       ),
                     ),
                     SizedBox(
@@ -277,7 +279,9 @@ class _CustomReviewBoxState extends State<CustomReviewBox> {
                     children: [
                       Icon(
                         Icons.thumb_down,
-                        color: Colors.white.withOpacity(0.5),
+                        color: dislikes.contains(SessionHelper.id)
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.3),
                       ),
                       SizedBox(
                         height: 1.h,

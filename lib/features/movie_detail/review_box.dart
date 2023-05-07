@@ -54,6 +54,28 @@ class _ReviewBoxState extends State<ReviewBox> {
                     ),
                   ),
                   Spacer(),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.thumb_up_sharp,
+                        color: Colors.white,
+                        size: 2.h,
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        widget.review.likes.length.toString() + " Likes",
+                        style: TextStyle(
+                          fontSize: 8.sp,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                    width: 2.w,
+                  )
                 ],
               ),
               SizedBox(

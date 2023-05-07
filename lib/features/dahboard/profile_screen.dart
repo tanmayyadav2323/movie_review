@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../authentication/services/auth_services.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -72,7 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 60.0,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        AuthService().logOut(context);
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0XFF202020),
                       ),
