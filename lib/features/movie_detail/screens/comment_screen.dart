@@ -1,11 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:movie_review/config/utils.dart';
-import 'package:movie_review/widgets/custom_button.dart';
+import 'package:movie_review/config/session_helper.dart';
+import 'package:movie_review/features/movie_detail/services/movie_service.dart';
+import 'package:movie_review/models/comment_model.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:movie_review/config/utils.dart';
+import 'package:movie_review/widgets/custom_button.dart';
+
 class CommentScreen extends StatefulWidget {
+  final String reviewId;
+
   static const routename = 'comment-screen';
-  const CommentScreen({super.key});
+  const CommentScreen({
+    Key? key,
+    required this.reviewId,
+  }) : super(key: key);
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -64,13 +74,29 @@ class _CommentScreenState extends State<CommentScreen> {
                     height: 4.h,
                   ),
                   CustomButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (commentController.text.length == 0) {
                         showSnackBar(context, "Enter Comment");
                       }
                       if (loading) return;
                       loading = true;
                       setState(() {});
+                      Comment comment = Comment(
+                        imageUrl: "",
+                        userId: SessionHelper.id,
+                        name: "",
+                        id: "",
+                        description: commentController.text,
+                        likes: [],
+                        dislikes: [],
+                        replies: [],
+                      );
+                      await MovieService().submitComment(
+                        context: context,
+                        reviewId: widget.reviewId,
+                        comment: comment,
+                      );
+                      Navigator.of(context).pop(comment);
                     },
                     text: "Add Comment",
                   )

@@ -3,6 +3,7 @@ const movieRouter = express.Router();
 const Review = require("../models/review.model");
 const User = require("../models/user.model");
 const Movie = require("../models/movie.model");
+const { Comment, Reply } = require("../models/comment.model");
 const MongoClient = require('mongodb').MongoClient;
 
 
@@ -71,6 +72,87 @@ movieRouter.post("/api/find-review", async (req, res, next) => {
             })
         );
         res.json(reviews);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/comment", async (req, res, next) => {
+    try {
+        const reviewId = req.body.reviewId;
+        let review = await Review.findById(reviewId);
+        let comment = new Comment(
+            {
+                description: req.body.description,
+                likes: req.body.likes,
+                dislikes: req.body.dislikes,
+                replies: req.body.replies,
+                userId: req.body.userId,
+                name: req.body.name,
+                imageUrl: req.body.imageUrl,
+            }
+
+        );
+
+        await comment.save();
+        review.comments.push(comment._id);
+        await review.save();
+        res.json();
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/find-comment", async (req, res, next) => {
+    try {
+        const reviewId = req.body.reviewId;
+        let review = await Review.findById(reviewId);
+        // Get all comments for the review
+        const comments = await Comment.find({
+            _id: { $in: review.comments },
+        });
+        comments.forEach(async (comment) => {
+            const user = await User.findById(comment.userId);
+            comment.url = user.imageUrl ?? "";
+            comment.name = user.name ?? "";
+            await comment.save();
+        });
+
+        res.json(comments);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+movieRouter.post("/api/update-comment", async (req, res, next) => {
+    try {
+        const id = req.body.id;
+        let comment = await Comment.findById(id);
+        comment.description = req.body.description;
+        comment.likes = req.body.likes;
+        comment.dislikes = req.body.dislikes;
+        // const replies = req.body.replies.map(reply => {
+
+        //     const newReply = new Reply({
+        //         description: reply.description,
+        //         userId: reply.userId,
+        //         name: reply.name,
+        //         imageUrl: reply.imageUrl,
+        //     });
+        //     console.log(newReply);
+        //     return newReply;
+
+        // });
+        comment.replies = req.body.replies;
+        comment.userId = req.body.userId;
+        const user = await User.findById(comment.userId);
+        comment.url = user.imageUrl ?? "";
+        comment.name = user.name ?? "";
+        await comment.save();
+        res.json(comment);
     } catch (e) {
         console.log(e);
         res.status(500).json({ error: e.message });

@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../config/global_variables.dart';
 import '../../../config/utils.dart';
+import '../../../models/comment_model.dart';
 
 class MovieService {
   Future<List<dynamic>> getTrendingMovies(
@@ -86,5 +87,104 @@ class MovieService {
       showSnackBar(context, e.toString());
     }
     return reviews;
+  }
+
+  Future<void> submitComment(
+      {required BuildContext context,
+      required String reviewId,
+      required Comment comment}) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/comment'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          "reviewId": reviewId,
+          "description": comment.description,
+          "likes": comment.likes,
+          "dislikes": comment.dislikes,
+          "replies": comment.replies,
+          "userId": comment.userId,
+          "name": comment.name,
+          "imageUrl": comment.imageUrl,
+        }),
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<List<Comment>> getComment(
+      {required BuildContext context, required String reviewId}) async {
+    List<Comment> comments = [];
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/find-comment'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({"reviewId": reviewId}),
+      );
+
+      log(res.body);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            comments.add(Comment.fromJson(jsonEncode(
+              jsonDecode(
+                res.body,
+              )[i],
+            )));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return comments;
+  }
+
+  Future<void> updateComment(
+      {required BuildContext context, required Comment comment}) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/update-comment'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          "id": comment.id,
+          "description": comment.description,
+          "likes": comment.likes,
+          "dislikes": comment.dislikes,
+          "replies": comment.replies,
+          "userId": comment.userId,
+          "name": comment.name,
+          "imageUrl": comment.imageUrl,
+        }),
+      );
+
+      log(res.body);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+    
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

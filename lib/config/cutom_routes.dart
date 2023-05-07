@@ -65,7 +65,9 @@ class CustomRouter {
           type: PageTransitionType.bottomToTop,
           duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: CommentScreen.routename),
-          child: CommentScreen(),
+          child: CommentScreen(
+            reviewId: settings.arguments as String,
+          ),
         );
       case LoginPage.routename:
         return MaterialPageRoute(
