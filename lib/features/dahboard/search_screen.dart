@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/dahboard/widgets/genre_card.dart';
+import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:sizer/sizer.dart';
+import 'package:movie_review/models/category_model.dart' as Cs;
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -12,71 +14,81 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
+  final MovieService movieService = MovieService();
+  bool loading = true;
+  late List<Cs.Category> category;
+  final TextEditingController textEditingController = TextEditingController();
+  bool show = false;
+
+  @override
+  void initState() {
+    textEditingController.addListener(
+      () {
+        if (textEditingController.text.length == 0) {
+          show = false;
+        } else {
+          show = true;
+        }
+        setState(() {});
+      },
+    );
+    getData();
+  }
+
+  getData() async {
+    category = await movieService.getCategoryMovies(context: context);
+    loading = false;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 8.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: TextField(
-              // controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: const TextStyle(
-                  color: Color(0XFFb4b4b4),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                SizedBox(height: 8.h),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: TextField(
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(
+                        color: Color(0XFFb4b4b4),
+                      ),
+                      prefixIcon: IconButton(
+                        icon: const Icon(Icons.search),
+                        color: const Color(0XFFf5c518),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: const Color(0XFF202020),
+                    ),
+                  ),
                 ),
-                prefixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  color: const Color(0XFFf5c518),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: const Color(0XFF202020),
-              ),
+                if (show == false)
+                  Expanded(
+                    child: Container(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        children: category.map((cas) {
+                          return GenreCard(
+                            category: cas,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Container(
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                mainAxisSpacing: 16.0,
-                crossAxisSpacing: 16.0,
-                padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 4.h),
-                children: const [
-                  GenreCard(
-                      title: 'Action',
-                      imageUrl: 'https://picsum.photos/500/300'),
-                  GenreCard(
-                      title: 'Horror',
-                      imageUrl: 'https://picsum.photos/500/300'),
-                  GenreCard(
-                      title: 'efasd',
-                      imageUrl: 'https://picsum.photos/500/300'),
-                  GenreCard(
-                      title: '4tgwrfd',
-                      imageUrl: 'https://picsum.photos/500/300'),
-                  GenreCard(
-                      title: 'ytrdfes',
-                      imageUrl: 'https://picsum.photos/500/300'),
-                  GenreCard(
-                      title: 'Actiefson',
-                      imageUrl: 'https://picsum.photos/500/300')
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:movie_review/features/movie_detail/review_screen.dart';
 import 'package:movie_review/features/splashscreen/splash_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/comment_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/write_review.dart';
+import 'package:movie_review/models/category_model.dart';
 import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:page_transition/page_transition.dart';
@@ -25,10 +26,12 @@ class CustomRouter {
           builder: (_) => const NavBarScreeen(),
         );
       case GenreMovies.routename:
-        return MaterialPageRoute(
+        return PageTransition(
+          type: PageTransitionType.bottomToTop,
+          duration: Duration(milliseconds: 500),
           settings: const RouteSettings(name: GenreMovies.routename),
-          builder: (_) => GenreMovies(
-            title: (settings.arguments as List<String>)[0],
+          child: GenreMovies(
+            category: settings.arguments as Category,
           ),
         );
       case VerifyPhoneNumberScreen.routename:

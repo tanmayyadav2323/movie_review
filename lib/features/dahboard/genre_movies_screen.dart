@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:movie_review/models/category_model.dart';
 import 'package:movie_review/widgets/movie_box.dart';
 import 'package:sizer/sizer.dart';
 
 class GenreMovies extends StatefulWidget {
-  final String title;
+  final Category category;
   static const routename = "/genre-movies";
   // const GenreMovies({super.key});
   const GenreMovies({
     Key? key,
-    required this.title,
+    required this.category,
   }) : super(key: key);
 
   @override
@@ -16,43 +17,49 @@ class GenreMovies extends StatefulWidget {
 }
 
 class _GenreMoviesState extends State<GenreMovies> {
+  late Category category;
+  @override
+  void initState() {
+    category = widget.category;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 8.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Text(
-              widget.title,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
-            ),
-          ),
-          SizedBox(height: 2.h),
-          Expanded(
-            child: Container(
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 0.59,
-                mainAxisSpacing: 16.0,
-                crossAxisSpacing: 16.0,
-                padding: EdgeInsets.only(
-                    left: 4.w, right: 4.w, top: 4.h, bottom: 4.h),
-                children: const [
-                  // MovieBox(imagename: "img1"),
-                  // MovieBox(imagename: "img2"),
-                  // MovieBox(imagename: "img3"),
-                  // MovieBox(imagename: "img4"),
-                  // MovieBox(imagename: "img1"),
-                  // MovieBox(imagename: "img2"),
-                  // MovieBox(imagename: "img3"),
-                  // MovieBox(imagename: "img4"),
-                ],
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Text(
+                  category.title,
+                  style:
+                      TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
+              SizedBox(height: 3.h),
+              Container(
+                child: Wrap(
+                  spacing: 2.w,
+                  runSpacing: 2.h,
+                  children: category.movies.map((movie) {
+                    return MovieBox(
+                      imagename: movie["thumbnail"],
+                      name: category.name,
+                      rating: movie["rating"] ?? 0,
+                      id: movie["detail"],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
