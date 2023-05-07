@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.0.5
   shared_preferences: ^2.0.17
   sms_autofill: ^2.3.0
+  intl: ^0.18.1
   # sms_autofill: ^2.3.0
 
 

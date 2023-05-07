@@ -290,4 +290,24 @@ movieRouter.post("/api/get-movie", async (req, res, next) => {
 });
 
 
+movieRouter.post("/api/search-movie", async (req, res, next) => {
+    try {
+        const name = req.body.name;
+        const regex = new RegExp(name, 'i');
+        const movies = await Movie.find({
+            $or: [
+                { title: { $regex: regex } },
+                { 'cast.name': { $regex: regex } },
+                { 'director.name': { $regex: regex } },
+            ],
+        }).exec();
+        res.json(movies);
+        console.log(movies);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+
 module.exports = movieRouter;

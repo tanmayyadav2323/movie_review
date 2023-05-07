@@ -38,6 +38,34 @@ class MovieService {
     return trndingMovies;
   }
 
+  Future<List<dynamic>> searchMovie(
+      {required BuildContext context, required String name}) async {
+    List<dynamic> seachMovies = [];
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/search-movie'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          "name":name
+        })
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          seachMovies = jsonDecode(res.body);
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return seachMovies;
+  }
+
   Future<List<Cs.Category>> getCategoryMovies(
       {required BuildContext context}) async {
     List<Cs.Category> categoryMovies = [];
