@@ -1,10 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoBox extends StatefulWidget {
-  const VideoBox({super.key});
+  final String url;
+  const VideoBox({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
 
   @override
   State<VideoBox> createState() => _VideoBoxState();
@@ -16,8 +21,7 @@ class _VideoBoxState extends State<VideoBox> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://res.cloudinary.com/dr1a3h3ll/video/upload/v1683311171/TIAA-HACK/Avatar__The_Way_of_Water___New_Trailer_1_p8mebz.mp4')
+    _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         _controller.setVolume(0);
@@ -63,6 +67,7 @@ class _VideoBoxState extends State<VideoBox> {
                   child: Stack(
                     children: [
                       VideoPlayer(
+                        
                         _controller,
                       ),
                       Container(

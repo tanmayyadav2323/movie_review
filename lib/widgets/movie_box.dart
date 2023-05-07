@@ -1,14 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
-import 'package:sizer/sizer.dart';
 
 class MovieBox extends StatefulWidget {
   final String imagename;
+  final String name;
+  final int rating;
+
   const MovieBox({
     Key? key,
     required this.imagename,
+    required this.name,
+    required this.rating,
   }) : super(key: key);
 
   @override
@@ -24,15 +30,18 @@ class _MovieBoxState extends State<MovieBox> {
       },
       child: Container(
         width: 40.w,
+        height: 40.h,
         color: Color(0xff171717),
         margin: EdgeInsets.symmetric(horizontal: 4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset(
-              "assets/images/${widget.imagename}.jpeg",
-              fit: BoxFit.fitWidth,
+            Image.network(
+              widget.imagename,
+              fit: BoxFit.fill,
               width: 40.w,
+              height: 27.h,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -43,7 +52,7 @@ class _MovieBoxState extends State<MovieBox> {
                     height: 1.h,
                   ),
                   Text(
-                    "Strange Things",
+                    widget.name,
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   ),
@@ -70,7 +79,7 @@ class _MovieBoxState extends State<MovieBox> {
                             SizedBox(
                               width: 1.w,
                             ),
-                            Text("4.8")
+                            Text(widget.rating.toString())
                           ],
                         ),
                       ),
