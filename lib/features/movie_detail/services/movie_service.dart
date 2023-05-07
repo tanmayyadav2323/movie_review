@@ -175,7 +175,6 @@ class MovieService {
         body: jsonEncode({"reviewId": reviewId}),
       );
 
-
       httpErrorHandle(
         response: res,
         context: context,
@@ -242,6 +241,32 @@ class MovieService {
           "name": comment.name,
           "imageUrl": comment.imageUrl,
         }),
+      );
+
+      log(res.body);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> updateRevieww(
+      {required BuildContext context,
+      required String id,
+      required List<String> likes,
+      required List<String> dislikes}) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/update-review'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({"id": id, "likes": likes, "dislikes": dislikes}),
       );
 
       log(res.body);

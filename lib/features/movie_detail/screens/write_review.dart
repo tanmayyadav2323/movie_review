@@ -222,6 +222,8 @@ class _WriteReviewScreeenState extends State<WriteReviewScreeen> {
                       Review? review = await MovieService().submitReview(
                         context: context,
                         review: Review(
+                          likes: [],
+                          dislikes: [],
                           name: "",
                           url: "",
                           userId: SessionHelper.id,

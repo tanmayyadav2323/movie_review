@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 
 class Review {
@@ -12,8 +11,11 @@ class Review {
   final String name;
   final String url;
   final String userId;
+  final List<String> likes;
+  final List<String> dislikes;
   final bool userReview;
   final List<String> comments;
+
   Review({
     required this.id,
     required this.title,
@@ -23,6 +25,8 @@ class Review {
     required this.name,
     required this.url,
     required this.userId,
+    required this.likes,
+    required this.dislikes,
     required this.userReview,
     required this.comments,
   });
@@ -36,6 +40,8 @@ class Review {
     String? name,
     String? url,
     String? userId,
+    List<String>? likes,
+    List<String>? dislikes,
     bool? userReview,
     List<String>? comments,
   }) {
@@ -48,6 +54,8 @@ class Review {
       name: name ?? this.name,
       url: url ?? this.url,
       userId: userId ?? this.userId,
+      likes: likes ?? this.likes,
+      dislikes: dislikes ?? this.dislikes,
       userReview: userReview ?? this.userReview,
       comments: comments ?? this.comments,
     );
@@ -63,6 +71,8 @@ class Review {
       'name': name,
       'url': url,
       'userId': userId,
+      'likes': likes,
+      'dislikes': dislikes,
       'userReview': userReview,
       'comments': comments,
     };
@@ -78,6 +88,8 @@ class Review {
       name: map['name'] ?? "",
       url: map['url'] ?? "",
       userId: map['userId'] ?? "",
+      likes: List<String>.from((map['likes'] as List<dynamic>)),
+      dislikes: List<String>.from((map['dislikes'] as List<dynamic>)),
       userReview: map['userReview'] ?? false,
       comments: List<String>.from(
         (map['comments'] as List<dynamic>),
@@ -92,7 +104,7 @@ class Review {
 
   @override
   String toString() {
-    return 'Review(id: $id, title: $title, movieId: $movieId, desciption: $desciption, spolier: $spolier, name: $name, url: $url, userId: $userId, userReview: $userReview, comments: $comments)';
+    return 'Review(id: $id, title: $title, movieId: $movieId, desciption: $desciption, spolier: $spolier, name: $name, url: $url, userId: $userId, likes: $likes, dislikes: $dislikes, userReview: $userReview, comments: $comments)';
   }
 
   @override
@@ -107,6 +119,8 @@ class Review {
         other.name == name &&
         other.url == url &&
         other.userId == userId &&
+        listEquals(other.likes, likes) &&
+        listEquals(other.dislikes, dislikes) &&
         other.userReview == userReview &&
         listEquals(other.comments, comments);
   }
@@ -121,6 +135,8 @@ class Review {
         name.hashCode ^
         url.hashCode ^
         userId.hashCode ^
+        likes.hashCode ^
+        dislikes.hashCode ^
         userReview.hashCode ^
         comments.hashCode;
   }

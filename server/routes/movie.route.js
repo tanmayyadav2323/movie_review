@@ -79,6 +79,21 @@ movieRouter.post("/api/find-review", async (req, res, next) => {
     }
 });
 
+
+movieRouter.post("/api/update-review", async (req, res, next) => {
+    try {
+        const reviewId = req.body.id;
+        let review = await Review.findById(reviewId);
+        review.likes = req.body.likes;
+        review.dislikes = req.body.dislikes;
+        await review.save();
+        res.json(review);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 movieRouter.post("/api/comment", async (req, res, next) => {
     try {
         const reviewId = req.body.reviewId;

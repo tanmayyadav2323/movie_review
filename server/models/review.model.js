@@ -38,6 +38,18 @@ const reviewSchema = new Schema(
 
         },
 
+        likes: [
+            {
+                type: String
+            }
+        ],
+
+        dislikes: [
+            {
+                type: String
+            }
+        ],
+
         comments: [
             {
                 type: String,
