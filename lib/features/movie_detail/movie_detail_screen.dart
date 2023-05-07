@@ -2,9 +2,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:movie_review/config/session_helper.dart';
+import 'package:movie_review/features/movie_detail/awards_view.dart';
 import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:movie_review/models/review_model.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:movie_review/config/theme_color.dart';
@@ -189,20 +192,25 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 2.h,
+                        height: 4.h,
                       ),
-                      Text(
-                        movie["title"],
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          movie["title"],
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
                         ),
                       ),
                       SizedBox(
                         height: 1.h,
                       ),
                       Text(
-                        "2022\t\t${movie["region"] ?? ''}",
+                        "${movie["region"] ?? ''}",
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -212,7 +220,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         height: 1.h,
                       ),
                       Wrap(
-                        runSpacing: 2.h,
                         spacing: 10.w,
                         children: (movie["genre"] as List).map((name) {
                           return Chip(
@@ -283,12 +290,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           ),
                           Column(
                             children: [
-                              SizedBox(
-                                height: 4.h,
-                                child: Icon(
-                                  Icons.share,
-                                  size: 3.5.h,
-                                  color: Colors.white,
+                              GestureDetector(
+                                onTap: () {
+                                  Share.share(
+                                    "👋 Hey, have you 📺👀 and rated 🌟 ${movie["title"]}! It received a ⭐ ${movie["rating"] ?? 0} rating. 💭💭💭 Want to rate and review 📝 the movie? 📲📥 Download the app 📱👉🏼 and join the 🎬🤓 Movie Maven community! 👥👥👥",
+                                    subject: '',
+                                  );
+                                },
+                                child: SizedBox(
+                                  height: 4.h,
+                                  child: Icon(
+                                    Icons.share,
+                                    size: 3.5.h,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               Text(
@@ -339,6 +354,93 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 2.w,
+                                vertical: 1.2.h,
+                              ),
+                              decoration: BoxDecoration(
+                                  color: lightBlack,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Release Date",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Text(DateFormat('dd MMMM, yyyy').format(
+                                      DateFormat("dd-mm-yyyy")
+                                          .parse(movie["releaseDate"])))
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 2.w,
+                                vertical: 1.2.h,
+                              ),
+                              decoration: BoxDecoration(
+                                  color: lightBlack,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Budget",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Text(movie["budget"])
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 1.w),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 2.w,
+                                vertical: 1.2.h,
+                              ),
+                              decoration: BoxDecoration(
+                                  color: lightBlack,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Box Office",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 0.5.h,
+                                  ),
+                                  Text(movie["boxOfficeCollection"])
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       VideoImageView(
                         videos: movie["videos"],
                         images: movie["photos"],
@@ -364,7 +466,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       SizedBox(
                         height: 4.h,
                       ),
-                      DidYouKnow(),
+                      AwardsView(awards: movie["awards"]),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      DidYouKnow(storyline: movie["storyline"]),
                       SizedBox(
                         height: 4.h,
                       ),

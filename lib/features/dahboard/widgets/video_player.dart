@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoApp extends StatefulWidget {
@@ -200,10 +201,18 @@ class _VideoAppState extends State<VideoApp> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(
-                            Icons.share,
-                            color: Colors.white,
-                            size: 3.h,
+                          GestureDetector(
+                            onTap: () {
+                              Share.share(
+                                "👋 Hey, have you 📺👀 and rated 🌟 ${widget.movie["title"]}! It received a ⭐ ${widget.movie["rating"] ?? 0} rating. 💭💭💭 Want to rate and review 📝 the movie? 📲📥 Download the app 📱👉🏼 and join the 🎬🤓 Movie Maven community! 👥👥👥",
+                                subject: '',
+                              );
+                            },
+                            child: Icon(
+                              Icons.share,
+                              color: Colors.white,
+                              size: 3.h,
+                            ),
                           ),
                           Icon(
                             Icons.add,
@@ -211,9 +220,9 @@ class _VideoAppState extends State<VideoApp> {
                             size: 3.5.h,
                           ),
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               if (_controller.value.isInitialized == false) {
-                                _controller.initialize();
+                                await _controller.initialize();
                                 _controller.setVolume(0);
                               }
                               if (_controller.value.isPlaying) {

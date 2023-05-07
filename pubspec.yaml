@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.0.17
   sms_autofill: ^2.3.0
   intl: ^0.18.1
+  share_plus: ^4.5.3
   # sms_autofill: ^2.3.0
 
 

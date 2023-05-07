@@ -26,7 +26,7 @@ class _CreatorsVewState extends State<CreatorsVew> {
           Row(
             children: [
               Text(
-                "Creators",
+                "Directors",
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
               SizedBox(

@@ -1,9 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:movie_review/features/movie_detail/did_you_know_box.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:movie_review/features/movie_detail/did_you_know_box.dart';
+
 class DidYouKnow extends StatefulWidget {
-  const DidYouKnow({super.key});
+  final List<dynamic> storyline;
+
+  const DidYouKnow({
+    Key? key,
+    required this.storyline,
+  }) : super(key: key);
 
   @override
   State<DidYouKnow> createState() => _DidYouKnowState();
@@ -20,7 +27,7 @@ class _DidYouKnowState extends State<DidYouKnow> {
           Row(
             children: [
               Text(
-                "Did you know",
+                "Story Line",
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
               SizedBox(
@@ -38,15 +45,11 @@ class _DidYouKnowState extends State<DidYouKnow> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
-                DidYouKnowBox(),
-                DidYouKnowBox(),
-                DidYouKnowBox(),
-                DidYouKnowBox(),
-                DidYouKnowBox(),
-              ],
+              children: widget.storyline.map((val) {
+                return DidYouKnowBox(text: val);
+              }).toList(),
             ),
-          )
+          ),
         ],
       ),
     );
