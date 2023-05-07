@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:movie_review/config/session_helper.dart';
 import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:movie_review/models/review_model.dart';
 import 'package:sizer/sizer.dart';
@@ -33,9 +34,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   List<Review> reviews = [];
   final MovieService movieService = MovieService();
   bool loading = true;
-
+  bool userratd = false;
   List<Review> userReviews = [];
   List<Review> criticReviews = [];
+  double userrating = 5;
 
   @override
   void initState() {
@@ -46,7 +48,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   getData() async {
     movie = await movieService.getMovieById(context: context, id: id);
-    log(movie.toString());
+    List<dynamic> ratedBy = movie['ratedBy'];
+
+    for (int i = 0; i < ratedBy.length; i++) {
+      Map<String, dynamic> rating = ratedBy[i];
+      userrating = double.parse(rating["rating"].toString());
+      if (rating['id'] == SessionHelper.id) {
+        userratd = true;
+        break;
+      }
+    }
     for (var data in movie["reviewIds"]) {
       Review review = Review.fromMap(data);
       if (review.userReview) {
@@ -114,7 +125,23 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                         topRight: Radius.circular(40)),
                                   ),
                                   context: context,
-                                  builder: (context) => RatingBottomSheet(),
+                                  builder: (context) => RatingBottomSheet(
+                                    initalRating: userrating,
+                                    onPressed: (val) async {
+                                      await movieService
+                                          .rateMovie(
+                                        context: context,
+                                        userId: SessionHelper.id,
+                                        movieId: movie["_id"],
+                                        rating: val,
+                                      )
+                                          .then((value) {
+                                        Navigator.of(context).pop();
+                                      });
+                                      userratd = true;
+                                      setState(() {});
+                                    },
+                                  ),
                                 );
                               },
                               child: Container(
@@ -127,8 +154,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      Icons.star_border,
-                                      color: Colors.white,
+                                      userratd ? Icons.star : Icons.star_border,
+                                      color: userratd
+                                          ? selectedIconColor
+                                          : Colors.white,
                                     ),
                                     SizedBox(
                                       width: 2.w,

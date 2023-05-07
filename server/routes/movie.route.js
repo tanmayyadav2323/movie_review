@@ -309,5 +309,38 @@ movieRouter.post("/api/search-movie", async (req, res, next) => {
     }
 });
 
+movieRouter.post("/api/rate-movie", async (req, res, next) => {
+    try {
+        const movieId = req.body.movieId;
+        const userId = req.body.userId;
+        const rating = req.body.rating;
+
+        let movie = await Movie.findById(movieId);
+
+        const existingRatingIndex = movie.ratedBy.findIndex(r => r.id.equals(userId));
+        if (existingRatingIndex >= 0) {
+            movie.ratedBy[existingRatingIndex].rating = rating;
+        } else {
+            movie.ratedBy.push({ id: userId, rating: rating });
+        }
+
+        const ratings = movie.ratedBy.map(r => r.rating);
+        const averageRating = ratings.reduce((total, rating) => total + rating, 0) / ratings.length;
+        movie.rating = averageRating;
+        await movie.save();
+
+        let movieview = await Movieview.findOne({ title: movie.title });
+
+        if (movieview) {
+            movieview.rating = averageRating;
+            await movieview.save();
+        }
+        res.json({});
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 
 module.exports = movieRouter;

@@ -1,19 +1,36 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:movie_review/config/theme_color.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:movie_review/config/theme_color.dart';
+
 class RatingBottomSheet extends StatefulWidget {
+  final double initalRating;
+  final Function(double) onPressed;
+
+  const RatingBottomSheet({
+    Key? key,
+    required this.initalRating,
+    required this.onPressed,
+  }) : super(key: key);
   @override
   _RatingBottomSheetState createState() => _RatingBottomSheetState();
 }
 
 class _RatingBottomSheetState extends State<RatingBottomSheet> {
-  int _selectedRating = 1;
+  double _selectedRating = 1;
   final List<int> _ratings = List.generate(10, (index) => index + 1);
   final ScrollController _scrollController = ScrollController();
   double _scrollPosition = 0;
+  bool loading = false;
+
+  @override
+  void initState() {
+    _selectedRating = widget.initalRating;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -73,7 +90,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        '$_selectedRating',
+                        '${_selectedRating.toInt()}',
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
@@ -146,7 +163,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                           ),
                           onTap: () {
                             setState(() {
-                              _selectedRating = rating;
+                              _selectedRating = double.parse(rating.toString());
                             });
                           },
                         );
@@ -191,7 +208,13 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
             width: MediaQuery.of(context).size.width * 0.5,
             height: 5.h,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (loading == false) {
+                  widget.onPressed(double.parse(_selectedRating.toString()));
+                }
+                loading = true;
+                setState(() {});
+              },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xffF5C518),
                 textStyle: TextStyle(
@@ -200,14 +223,19 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              child: Text(
-                "Rate",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: loading
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    )
+                  : Text(
+                      "Rate",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
           ),
         ],

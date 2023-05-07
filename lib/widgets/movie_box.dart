@@ -60,6 +60,8 @@ class _MovieBoxState extends State<MovieBox> {
                     widget.name,
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(
                     height: 1.h,

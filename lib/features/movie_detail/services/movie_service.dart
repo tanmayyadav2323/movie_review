@@ -13,6 +13,36 @@ import '../../../config/utils.dart';
 import '../../../models/comment_model.dart';
 
 class MovieService {
+  Future<void> rateMovie(
+      {required BuildContext context,
+      required String userId,
+      required String movieId,
+      required double rating}) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/rate-movie'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          "userId": userId,
+          "movieId": movieId,
+          "rating": rating,
+        }),
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   Future<List<dynamic>> getTrendingMovies(
       {required BuildContext context}) async {
     List<dynamic> trndingMovies = [];
@@ -42,15 +72,11 @@ class MovieService {
       {required BuildContext context, required String name}) async {
     List<dynamic> seachMovies = [];
     try {
-      http.Response res = await http.post(
-        Uri.parse('$uri/api/search-movie'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode({
-          "name":name
-        })
-      );
+      http.Response res = await http.post(Uri.parse('$uri/api/search-movie'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode({"name": name}));
 
       httpErrorHandle(
         response: res,
