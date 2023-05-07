@@ -3,7 +3,13 @@ import 'package:movie_review/widgets/movie_box.dart';
 import 'package:sizer/sizer.dart';
 
 class GenreMovies extends StatefulWidget {
-  const GenreMovies({super.key});
+  final String title;
+  static const routename = "/genre-movies";
+  // const GenreMovies({super.key});
+  const GenreMovies({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<GenreMovies> createState() => _GenreMoviesState();
@@ -19,7 +25,7 @@ class _GenreMoviesState extends State<GenreMovies> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
             child: Text(
-              "Action",
+              widget.title,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
             ),
           ),

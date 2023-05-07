@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:movie_review/features/authentication/login_screen.dart';
 import 'package:movie_review/features/authentication/verify_screen.dart';
+import 'package:movie_review/features/dahboard/genre_movies_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:movie_review/features/movie_detail/review_screen.dart';
+import 'package:movie_review/features/splashscreen/splash_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/comment_screen.dart';
 import 'package:movie_review/features/movie_detail/screens/write_review.dart';
 import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/navbar_screen.dart';
 import 'package:page_transition/page_transition.dart';
-
-import '../features/Splashscreen/splash_screen.dart';
 
 class CustomRouter {
   static Route onGenerateRoute(RouteSettings settings) {
@@ -23,6 +23,13 @@ class CustomRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: NavBarScreeen.routename),
           builder: (_) => const NavBarScreeen(),
+        );
+      case GenreMovies.routename:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: GenreMovies.routename),
+          builder: (_) => GenreMovies(
+            title: (settings.arguments as List<String>)[0],
+          ),
         );
       case VerifyPhoneNumberScreen.routename:
         return MaterialPageRoute(

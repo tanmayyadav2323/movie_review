@@ -52,13 +52,25 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
                 padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 4.h),
-                children: [
-                  GenreCard('Action', 'https://picsum.photos/500/300'),
-                  GenreCard('Comedy', 'https://picsum.photos/500/300'),
-                  GenreCard('Drama', 'https://picsum.photos/500/300'),
-                  GenreCard('Horror', 'https://picsum.photos/500/300'),
-                  GenreCard('Romance', 'https://picsum.photos/500/300'),
-                  GenreCard('Sci-Fi', 'https://picsum.photos/500/300')
+                children: const [
+                  GenreCard(
+                      title: 'Action',
+                      imageUrl: 'https://picsum.photos/500/300'),
+                  GenreCard(
+                      title: 'Horror',
+                      imageUrl: 'https://picsum.photos/500/300'),
+                  GenreCard(
+                      title: 'efasd',
+                      imageUrl: 'https://picsum.photos/500/300'),
+                  GenreCard(
+                      title: '4tgwrfd',
+                      imageUrl: 'https://picsum.photos/500/300'),
+                  GenreCard(
+                      title: 'ytrdfes',
+                      imageUrl: 'https://picsum.photos/500/300'),
+                  GenreCard(
+                      title: 'Actiefson',
+                      imageUrl: 'https://picsum.photos/500/300')
                 ],
               ),
             ),
