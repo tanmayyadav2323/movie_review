@@ -8,6 +8,8 @@ import 'package:movie_review/features/dahboard/search_screen.dart';
 import 'package:movie_review/features/movie_detail/movie_detail_screen.dart';
 import 'package:sizer/sizer.dart';
 
+import 'features/authentication/watchlist/watchlist_screen.dart';
+
 class NavBarScreeen extends StatefulWidget {
   static const routename = '/nav-screen';
   const NavBarScreeen({super.key});
@@ -22,11 +24,7 @@ class _NavBarScreeenState extends State<NavBarScreeen> {
   static const List<Widget> _screens = <Widget>[
     DashBoardScreen(),
     SearchScreen(),
-    Center(
-      child: Text(
-        'Search',
-      ),
-    ),
+    WatchListScreen(),
     ProfilePage(),
   ];
 

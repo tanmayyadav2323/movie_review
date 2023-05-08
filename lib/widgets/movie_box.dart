@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:movie_review/config/session_helper.dart';
+import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:movie_review/config/theme_color.dart';
@@ -24,6 +26,10 @@ class MovieBox extends StatefulWidget {
 }
 
 class _MovieBoxState extends State<MovieBox> {
+  final MovieService movieService = MovieService();
+
+  bool added = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,7 +42,7 @@ class _MovieBoxState extends State<MovieBox> {
       child: Container(
         width: 40.w,
         height: 40.h,
-        color: Color(0xff171717),
+        color: const Color(0xff171717),
         margin: EdgeInsets.symmetric(horizontal: 4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +74,7 @@ class _MovieBoxState extends State<MovieBox> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
                         Container(
@@ -84,7 +90,7 @@ class _MovieBoxState extends State<MovieBox> {
                               Icon(
                                 Icons.star,
                                 size: 2.h,
-                                color: Color(0xffF5C518),
+                                color: const Color(0xffF5C518),
                               ),
                               SizedBox(
                                 width: 1.w,
@@ -93,10 +99,50 @@ class _MovieBoxState extends State<MovieBox> {
                             ],
                           ),
                         ),
-                        Spacer(),
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () async {
+                            if (SessionHelper.movieListIds.contains(
+                              MovieBox(
+                                  imagename: widget.imagename,
+                                  name: widget.name,
+                                  rating: widget.rating,
+                                  id: widget.id),
+                            )) {
+                              SessionHelper.movieList.remove(
+                                MovieBox(
+                                    imagename: widget.imagename,
+                                    name: widget.name,
+                                    rating: widget.rating,
+                                    id: widget.id),
+                              );
+                            } else {
+                              SessionHelper.movieList.add(
+                                MovieBox(
+                                    imagename: widget.imagename,
+                                    name: widget.name,
+                                    rating: widget.rating,
+                                    id: widget.id),
+                              );
+                            }
+                            setState(() {});
+                            // await movieService.addWatch(
+                            //     context: context, movieId: widget.id);
+                            // added = false;
+                            // setState(() {});
+                          },
+                          child: SessionHelper.movieList.contains(
+                            MovieBox(
+                                imagename: widget.imagename,
+                                name: widget.name,
+                                rating: widget.rating,
+                                id: widget.id),
+                          )
+                              ? Icon(Icons.check)
+                              : Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
                         ),
                         SizedBox(
                           width: 2.w,

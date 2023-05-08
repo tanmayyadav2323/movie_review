@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/error_handling.dart';
+import 'package:movie_review/config/session_helper.dart';
 import 'package:movie_review/models/review_model.dart';
 import 'package:movie_review/models/user_model.dart';
 import 'package:http/http.dart' as http;
@@ -34,9 +35,7 @@ class MovieService {
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
-          
-        },
+        onSuccess: () {},
       );
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -333,5 +332,61 @@ class MovieService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<void> addWatch({
+    required BuildContext context,
+    required String movieId,
+  }) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/add-watch'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({"userId": SessionHelper.id, "movieId": movieId}),
+      );
+
+      log(res.body);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<dynamic> getWatch({
+    required BuildContext context,
+    required String movieId,
+  }) async {
+    dynamic list;
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/api/watch/${SessionHelper.id}/movies'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+
+      log(res.body);
+      return res.body;
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          list = jsonDecode(res.body);
+          log(list);
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return list;
   }
 }

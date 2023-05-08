@@ -94,7 +94,7 @@ async function main() {
 
     console.log("database connected");
 
-    app.listen(process.env.PORT || 3000, () => console.log(`Server listening on port ${PORT}`));
+    app.listen(process.env.PORT || 3030, () => console.log(`Server listening on port ${PORT}`));
   } catch (error) {
     console.log(error);
     process.exit(1);
