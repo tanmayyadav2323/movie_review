@@ -29,8 +29,7 @@ class _MovieBoxState extends State<MovieBox> {
   final MovieService movieService = MovieService();
 
   bool added = false;
-
-  @override
+@override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -102,21 +101,13 @@ class _MovieBoxState extends State<MovieBox> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () async {
-                            if (SessionHelper.movieListIds.contains(
-                              MovieBox(
-                                  imagename: widget.imagename,
-                                  name: widget.name,
-                                  rating: widget.rating,
-                                  id: widget.id),
-                            )) {
-                              SessionHelper.movieList.remove(
-                                MovieBox(
-                                    imagename: widget.imagename,
-                                    name: widget.name,
-                                    rating: widget.rating,
-                                    id: widget.id),
-                              );
+                            if (SessionHelper.movieListIds
+                                .contains(widget.id)) {
+                              SessionHelper.movieListIds.remove(widget.id);
+                              SessionHelper.movieList.removeWhere(
+                                  (element) => element.id == widget.id);
                             } else {
+                              SessionHelper.movieListIds.add(widget.id);
                               SessionHelper.movieList.add(
                                 MovieBox(
                                     imagename: widget.imagename,
@@ -126,19 +117,12 @@ class _MovieBoxState extends State<MovieBox> {
                               );
                             }
                             setState(() {});
-                            // await movieService.addWatch(
-                            //     context: context, movieId: widget.id);
-                            // added = false;
-                            // setState(() {});
                           },
-                          child: SessionHelper.movieList.contains(
-                            MovieBox(
-                                imagename: widget.imagename,
-                                name: widget.name,
-                                rating: widget.rating,
-                                id: widget.id),
-                          )
-                              ? Icon(Icons.check)
+                          child: SessionHelper.movieListIds.contains(widget.id)
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                )
                               : Icon(
                                   Icons.add,
                                   color: Colors.white,

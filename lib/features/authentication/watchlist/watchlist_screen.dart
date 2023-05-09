@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:movie_review/config/session_helper.dart';
+import 'package:movie_review/config/theme_color.dart';
 import 'package:movie_review/features/movie_detail/services/movie_service.dart';
 import 'package:sizer/sizer.dart';
 
@@ -31,6 +32,8 @@ class _WatchListScreenState extends State<WatchListScreen> {
     // }
   }
 
+  bool isPrivate = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +54,17 @@ class _WatchListScreenState extends State<WatchListScreen> {
                       style: TextStyle(
                           fontSize: 20.sp, fontWeight: FontWeight.w600),
                     ),
+                  ),
+                  SwitchListTile(
+                    title: Text(isPrivate ? 'Private' : 'Public'),
+                    value: isPrivate,
+                    activeColor: selectedIconColor,
+                    inactiveTrackColor: Colors.white.withOpacity(0.4),
+                    onChanged: (value) {
+                      setState(() {
+                        isPrivate = value;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 4.h,
